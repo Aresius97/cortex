@@ -1,0 +1,13 @@
+mode,detector,param,precision,recall,n_flagged,financial_cost,investigators_needed
+conservative,fraudar,k_std=0.5,0.145,0.987,537,73101.17,27
+conservative,copycatch,"window=15,min_acc=3",1.0,0.951,58,7158.87,3
+conservative,flowscope,"span=60,ratio=0.2",1.0,1.0,30,0.0,2
+conservative,FUSED (all 3),-,0.266,0.976,625,80260.04,32
+balanced,fraudar,k_std=1.0,0.213,0.937,347,49108.96,18
+balanced,copycatch,"window=15,min_acc=3",1.0,0.951,58,7158.87,3
+balanced,flowscope,"span=60,ratio=0.2",1.0,1.0,30,0.0,2
+balanced,FUSED (all 3),-,0.372,0.953,435,56267.83,22
+aggressive,fraudar,k_std=1.75,0.287,0.519,143,126995.96,8
+aggressive,copycatch,"window=10,min_acc=4",1.0,0.623,38,273833.31,2
+aggressive,flowscope,"span=40,ratio=0.2",1.0,0.6,18,278953.56,1
+aggressive,FUSED (all 3),-,0.487,0.571,199,679782.83,10
