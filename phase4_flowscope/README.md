@@ -4,9 +4,9 @@
 
 Detects the `circular_flow_laundering` archetype by tracing directed cycles through the merchant-to-merchant transaction graph, based on Li et al. (AAAI 2020), "FlowScope: Spotting Money Laundering Based on Graph Flow Analysis."
 
-**What we implement:** a directed merchant→merchant transaction graph (already a strong pre-filter, since legitimate traffic in this dataset is customer↔merchant only — a merchant-to-merchant transfer is structurally rare by construction), simple-cycle enumeration on that graph, and two suspicion checks per cycle matching the actual laundering signature: amount conservation across hops, and time compression (a real layering chain completes quickly).
+**Implemented components:** a directed merchant→merchant transaction graph (already a strong pre-filter, since legitimate traffic in this dataset is customer↔merchant only — a merchant-to-merchant transfer is structurally rare by construction), simple-cycle enumeration on that graph, and two suspicion checks per cycle matching the actual laundering signature: amount conservation across hops, and time compression (a real layering chain completes quickly).
 
-**What we deliberately do not implement:** FlowScope's full multi-partite, time-layered flow-optimization machinery, built for laundering detection at a much larger graph scale than this dataset's few hundred merchants. Direct cycle enumeration with consistency checks captures the same signature here without the heavier apparatus.
+**Intentionally omitted components:** FlowScope's full multi-partite, time-layered flow-optimization machinery, built for laundering detection at a much larger graph scale than this dataset's few hundred merchants. Direct cycle enumeration with consistency checks captures the same signature here without the heavier apparatus.
 
 ## Run it
 
