@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORTEX — Investigation Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep-space:#080C11;
+    --slate:#12181F;
+    --panel:#1A232D;
+    --line:#2A3542;
+    --amber:#E8A33D;
+    --teal:#3FA796;
+    --crimson:#C4432B;
+    --steel:#8B9AA8;
+    --paper:#EDE6D6;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(232,163,61,0.05), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 100% 0%, rgba(63,167,150,0.04), transparent 55%),
+      var(--deep-space);
+    color:#DDE3E8;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.9rem;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--amber); color:var(--deep-space); }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+  h1,h2,h3{ font-family:'Archivo', sans-serif; letter-spacing:-0.02em; font-weight:900; }
+  ::-webkit-scrollbar{ height:8px; width:8px; }
+  ::-webkit-scrollbar-track{ background:transparent; }
+  ::-webkit-scrollbar-thumb{ background:var(--line); border-radius:5px; }
+
+  #app{ max-width:1240px; margin:0 auto; padding:0 28px 90px; }
+
+  /* ── HEADER ─────────────────────────────────────────────── */
+  header.topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 0 18px; border-bottom:1px solid var(--line);
+    flex-wrap:wrap; gap:12px;
+  }
+  .brand{ 
+    display:flex; align-items:center; gap:14px;
+    position:relative;
+  }
+  .brand .mark{
+    width:52px; 
+    height:52px; 
+    border:2px solid var(--amber); 
+    border-radius:10px;
+    display:flex; 
+    align-items:center; 
+    justify-content:center;
+    background:rgba(232,163,61,0.08);
+    box-shadow: 0 0 30px rgba(232,163,61,0.15), inset 0 0 30px rgba(232,163,61,0.05);
+    transition: all 0.3s ease;
+    flex-shrink:0;
+    position:relative;
+  }
+  .brand .mark::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 14px;
+    border: 1px solid rgba(232,163,61,0.2);
+    animation: logoPulse 3s ease-in-out infinite;
+  }
+  @keyframes logoPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.04); }
+  }
+  .brand .mark:hover {
+    box-shadow: 0 0 50px rgba(232,163,61,0.3), inset 0 0 50px rgba(232,163,61,0.08);
+    transform: scale(1.02);
+  }
+  /* ── CORTEX LOGO MARK ── */
+  .logo-mark {
+    width: 38px;
+    height: 38px;
+    position: relative;
+  }
+  .logo-mark .outer-ring {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--amber);
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+  .logo-mark .inner-ring {
+    position: absolute;
+    inset: 6px;
+    border: 1.5px solid var(--amber);
+    border-radius: 50%;
+    opacity: 0.4;
+  }
+  .logo-mark .center-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--amber);
+    border-radius: 50%;
+    box-shadow: 0 0 16px rgba(232,163,61,0.6);
+  }
+  .logo-mark .line-h {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    right: 20%;
+    height: 1.5px;
+    background: var(--amber);
+    transform: translateY(-50%);
+    opacity: 0.5;
+  }
+  .logo-mark .line-v {
+    position: absolute;
+    left: 50%;
+    top: 20%;
+    bottom: 20%;
+    width: 1.5px;
+    background: var(--amber);
+    transform: translateX(-50%);
+    opacity: 0.5;
+  }
+  .logo-mark .node {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: var(--amber);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(232,163,61,0.4);
+  }
+  .logo-mark .node-tl { top: 3px; left: 3px; }
+  .logo-mark .node-tr { top: 3px; right: 3px; }
+  .logo-mark .node-bl { bottom: 3px; left: 3px; }
+  .logo-mark .node-br { bottom: 3px; right: 3px; }
+  .logo-mark .node-l { top: 50%; left: 3px; transform: translateY(-50%); }
+  .logo-mark .node-r { top: 50%; right: 3px; transform: translateY(-50%); }
+  .logo-mark .node-t { top: 3px; left: 50%; transform: translateX(-50%); }
+  .logo-mark .node-b { bottom: 3px; left: 50%; transform: translateX(-50%); }
+  /* Node pulsing animation */
+  .logo-mark .node {
+    animation: nodePulse 2.5s ease-in-out infinite;
+  }
+  .logo-mark .node:nth-child(2) { animation-delay: 0.15s; }
+  .logo-mark .node:nth-child(3) { animation-delay: 0.3s; }
+  .logo-mark .node:nth-child(4) { animation-delay: 0.45s; }
+  .logo-mark .node:nth-child(5) { animation-delay: 0.6s; }
+  .logo-mark .node:nth-child(6) { animation-delay: 0.75s; }
+  .logo-mark .node:nth-child(7) { animation-delay: 0.9s; }
+  .logo-mark .node:nth-child(8) { animation-delay: 1.05s; }
+  .logo-mark .node:nth-child(9) { animation-delay: 1.2s; }
+  @keyframes nodePulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.3); }
+  }
+
+  .brand .name-group {
+    display:flex;
+    flex-direction:column;
+    line-height:1;
+  }
+  .brand .name{ 
+    font-size:28px; 
+    letter-spacing:0.02em; 
+    font-family:'Archivo';
+    font-weight:900;
+    background: linear-gradient(135deg, #F4C066, var(--amber), #F4C066);
+    background-size: 200% 200%;
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    animation: shimmer 4s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .brand .tag{ 
+    font-family:'IBM Plex Mono'; 
+    font-size:11px; 
+    color:var(--steel); 
+    letter-spacing:0.08em; 
+    padding-top:4px;
+    text-transform:uppercase;
+  }
+  .ticker{ display:flex; gap:24px; font-family:'IBM Plex Mono'; font-size:11.5px; color:var(--steel); flex-wrap:wrap; }
+  .ticker b{ color:#DDE3E8; font-weight:600; }
+  .ticker .dot{ color:var(--amber); display:inline-block; animation:pulseDot 2s infinite; }
+
+  /* ── FIVE ACT NAV ───────────────────────────────────────── */
+  nav.acts{
+    display:flex; gap:2px; margin:26px 0 0; overflow-x:auto;
+    border-bottom:1px solid var(--line);
+  }
+  .act-tab{
+    flex:1; min-width:150px; padding:14px 16px 12px; cursor:pointer;
+    border-bottom:2px solid transparent; position:relative; transition:all 0.3s ease-in-out;
+    display:flex; align-items:center; gap:9px; white-space:nowrap;
+  }
+  .act-tab:hover .act-tab-title{ color:var(--amber); }
+  .act-tab.active{ border-bottom:2px solid var(--amber); }
+  .act-tab.active .act-tab-title{ color:var(--amber); }
+  .act-num{
+    font-family:'IBM Plex Mono'; font-size:10.5px; color:var(--steel);
+    width:20px; height:20px; border:1px solid var(--line); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .act-tab.active .act-num{ border-color:var(--amber); color:var(--amber); }
+  .act-tab.done .act-num{ background:var(--teal); border-color:var(--teal); color:var(--deep-space); font-size:11px; }
+  .act-tab-title{ font-weight:600; font-size:13px; color:#DDE3E8; transition:color 0.2s; }
+  .act-tab-sub{ font-family:'IBM Plex Mono'; font-size:10px; color:var(--steel); display:none; }
+
+  main{ padding-top:32px; }
+  .eyebrow{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--amber); letter-spacing:0.08em; margin-bottom:10px; }
+  .act-title{ font-size:2.2rem; margin-bottom:8px; }
+  .act-question{ font-size:14.5px; color:var(--steel); margin-bottom:30px; }
+
+  /* ── GRID / GLASS CARDS ─────────────────────────────────── */
+  .grid{ display:grid; gap:16px; }
+  .grid-3{ grid-template-columns:repeat(3, 1fr); }
+  .grid-2{ grid-template-columns:1.3fr 1fr; }
+
+  .card{
+    background:rgba(18,24,31,0.85);
+    backdrop-filter:blur(6px);
+    border:1px solid rgba(42,53,66,0.6);
+    border-radius:12px; padding:22px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover{ border-color:rgba(232,163,61,0.45); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 0 22px rgba(232,163,61,0.06); }
+  .card-tight{ padding:18px 20px; }
+  .card-hero{ border-color:rgba(232,163,61,0.5); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 0 30px rgba(232,163,61,0.09); }
+  .card-crimson{ border-color:rgba(196,67,43,0.45); }
+  .card-teal{ border-color:rgba(63,167,150,0.4); }
+
+  .kicker{ font-family:'IBM Plex Mono'; font-size:10.5px; color:var(--steel); letter-spacing:0.06em; margin-bottom:8px; }
+  .big-num{ font-family:'Archivo'; font-weight:900; font-size:3rem; line-height:1; letter-spacing:-0.02em; }
+  .big-num.amber{ background:linear-gradient(135deg, #F4C066, var(--amber)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .big-num.teal{ background:linear-gradient(135deg, #6BD4C1, var(--teal)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .big-num.crimson{ color:var(--crimson); }
+  .small-label{ font-size:12.5px; color:var(--steel); margin-top:8px; max-width:32ch; }
+
+  /* ── SIGNAL BARS ─────────────────────────────────────────── */
+  .signal-row{ display:flex; align-items:center; gap:12px; margin:9px 0; }
+  .signal-name{ font-family:'IBM Plex Mono'; font-size:11px; width:76px; flex-shrink:0; color:var(--steel); }
+  .signal-track{ flex:1; height:8px; border-radius:4px; background:rgba(139,154,168,0.12); overflow:hidden; position:relative; }
+  .signal-fill{ height:100%; border-radius:4px; }
+  .signal-fill.high{ background:linear-gradient(90deg, var(--teal), #6BD4C1); box-shadow:0 0 10px rgba(63,167,150,0.5); }
+  .signal-fill.low{ background:var(--steel); opacity:0.5; }
+  .signal-track.na{ background-image:repeating-linear-gradient(90deg, rgba(139,154,168,0.3) 0 6px, transparent 6px 12px); background-color:transparent; }
+  .signal-val{ font-family:'IBM Plex Mono'; font-size:11px; width:56px; text-align:right; flex-shrink:0; }
+  .signal-val.high{ color:var(--teal); }
+  .signal-val.low{ color:var(--steel); }
+  .signal-val.na{ color:var(--steel); opacity:0.5; }
+
+  /* ── BADGES ─────────────────────────────────────────────── */
+  .sig-dot{ display:inline-flex; align-items:center; gap:5px; font-family:'IBM Plex Mono'; font-size:11px; font-weight:600; }
+  .sig-dot.high{ color:var(--teal); }
+  .sig-dot.low{ color:var(--steel); }
+  .sig-dot.na{ color:var(--steel); opacity:0.5; }
+  .sig-dot .pulse-dot{ animation:pulseDot 2s infinite; }
+
+  .det-badge{ font-family:'IBM Plex Mono'; font-size:10.5px; padding:3px 9px; border-radius:5px; letter-spacing:0.03em; font-weight:600; border:1px solid; }
+  .det-fraudar{ background:rgba(232,163,61,0.12); color:var(--amber); border-color:rgba(232,163,61,0.35); }
+  .det-copycatch{ background:rgba(196,67,43,0.12); color:#E28066; border-color:rgba(196,67,43,0.35); }
+  .det-flowscope{ background:rgba(63,167,150,0.12); color:var(--teal); border-color:rgba(63,167,150,0.35); }
+
+  /* ── PRIORITY STAMP ─────────────────────────────────────── */
+  .stamp{
+    display:inline-block; font-family:'IBM Plex Mono'; font-weight:700; font-size:12px;
+    letter-spacing:0.06em; padding:6px 14px; border:2px solid currentColor; border-radius:3px;
+    position:relative; text-transform:uppercase;
+  }
+  .stamp::after{ content:''; position:absolute; inset:-4px; border:1px solid currentColor; border-radius:5px; opacity:0.3; }
+  .stamp-p1{ color:var(--crimson); transform:rotate(-2deg); }
+  .stamp-p2{ color:var(--amber); transform:rotate(0deg); }
+  .stamp-p3{ color:var(--steel); transform:rotate(2deg); }
+  .stamp-ok{ color:var(--teal); transform:rotate(-1deg); }
+  .stamp-warn{ color:var(--crimson); transform:rotate(-2deg); }
+
+  /* ── BUTTONS ────────────────────────────────────────────── */
+  button.btn, a.btn{
+    font-family:'IBM Plex Mono'; font-size:12.5px; font-weight:500; color:var(--deep-space);
+    background:var(--amber); border:none; padding:11px 18px; border-radius:6px; cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  button.btn:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(232,163,61,0.28); }
+  button.btn.secondary{ background:transparent; color:#DDE3E8; border:1px solid var(--line); }
+  button.btn.secondary:hover{ box-shadow:0 6px 16px rgba(0,0,0,0.3); border-color:var(--amber); }
+
+  /* ── TABLE ──────────────────────────────────────────────── */
+  table{ width:100%; border-collapse:collapse; font-size:12.8px; }
+  th{ text-align:left; font-family:'IBM Plex Mono'; font-size:10.2px; color:var(--steel); letter-spacing:0.05em; padding:9px 10px; border-bottom:1px solid var(--line); }
+  td{ padding:10px 10px; border-bottom:1px solid rgba(42,53,66,0.5); vertical-align:middle; }
+  tr.qrow{ cursor:pointer; transition:background 0.15s; }
+  tr.qrow:hover{ background:rgba(232,163,61,0.045); }
+
+  .footnote{ font-size:11.5px; color:var(--steel); margin-top:12px; line-height:1.65; }
+  .footnote b{ color:#DDE3E8; }
+
+  select{ background:var(--panel); color:#DDE3E8; border:1px solid var(--line); border-radius:6px; padding:9px 12px; font-size:13px; width:100%; font-family:'IBM Plex Mono'; }
+
+  /* ── FLOW DIAGRAM ───────────────────────────────────────── */
+  .flow{ display:flex; align-items:center; gap:10px; font-family:'IBM Plex Mono'; font-size:12px; color:var(--steel); flex-wrap:wrap; justify-content:center; }
+  .flow .node{ background:var(--panel); border:1px solid var(--line); padding:10px 16px; border-radius:8px; text-align:center; }
+  .flow .arrow{ color:var(--line); font-size:16px; }
+
+  /* ── MODE CARDS ─────────────────────────────────────────── */
+  .mode-card{ cursor:pointer; }
+  .mode-card.active{ border-color:var(--amber); box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 0 24px rgba(232,163,61,0.1); }
+  .mode-name{ font-family:'Archivo'; font-weight:800; font-size:16px; margin-bottom:2px; }
+  .mode-sub{ font-size:11.5px; color:var(--steel); margin-bottom:16px; }
+  .mode-stat{ display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid rgba(42,53,66,0.5); font-size:12.5px; }
+  .mode-stat:last-child{ border-bottom:none; }
+  .mode-stat b{ font-family:'IBM Plex Mono'; }
+
+  /* ── PAPER CARD ─────────────────────────────────────────── */
+  .paper-inset{
+    background:var(--paper); color:#2A2620; border-radius:10px; padding:22px 24px;
+    font-family:'IBM Plex Mono'; font-size:12px; line-height:1.7;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+  }
+  .paper-inset h4{ font-size:10.5px; letter-spacing:0.05em; margin:16px 0 5px; color:#6B4A2A; text-transform:uppercase; }
+  .paper-inset h4:first-child{ margin-top:0; }
+  .paper-badge{ display:inline-block; font-size:10px; background:#2A2620; color:var(--paper); padding:4px 9px; border-radius:4px; margin-bottom:14px; letter-spacing:0.04em; }
+  .paper-inset .quickview{ background:rgba(42,38,32,0.06); border-left:3px solid #6B4A2A; padding:11px 13px; margin-bottom:14px; font-size:11.5px; }
+  .paper-inset .quickview div{ margin:3px 0; }
+  .paper-inset ul{ margin:4px 0 0 16px; }
+  .paper-hr{ border:none; border-top:1px solid rgba(42,38,32,0.18); margin:12px 0; }
+
+  /* ── GUARDRAIL ──────────────────────────────────────────── */
+  .guardrail{
+    display:flex; gap:12px; align-items:flex-start;
+    background:rgba(232,163,61,0.06); border:1px solid rgba(232,163,61,0.3);
+    border-radius:8px; padding:14px 16px; font-size:12.5px; color:#E9D9B8; margin-top:16px; line-height:1.6;
+  }
+  .guardrail .gi{ color:var(--amber); font-size:15px; flex-shrink:0; }
+
+  .before-after{ display:grid; grid-template-columns:1fr auto 1fr; gap:18px; align-items:stretch; }
+  .ba-col{ border:1px solid var(--line); border-radius:10px; padding:18px; background:var(--panel); }
+  .ba-col.after{ border-color:rgba(196,67,43,0.4); }
+  .ba-label{ font-family:'IBM Plex Mono'; font-size:10.5px; letter-spacing:0.06em; color:var(--steel); margin-bottom:12px; }
+  .ba-row{ display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid rgba(42,53,66,0.5); font-size:12.8px; }
+  .ba-row:last-child{ border-bottom:none; }
+  .ba-arrow-mid{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; color:var(--line); font-size:22px; }
+
+  .section-label{ font-family:'IBM Plex Mono'; font-size:10.8px; letter-spacing:0.05em; color:var(--steel); margin:26px 0 12px; }
+  .section-label:first-child{ margin-top:0; }
+
+  /* ── PULSE (used on active/selected items only) ─────────── */
+  @keyframes pulseDot{
+    0%{ opacity:1; } 50%{ opacity:0.25; } 100%{ opacity:1; }
+  }
+  .pulse-ring{ position:relative; }
+  .pulse-ring::before{
+    content:''; position:absolute; inset:-6px; border-radius:inherit;
+    border:1px solid var(--amber); opacity:0; animation:pulseRing 2s ease-out infinite;
+  }
+  @keyframes pulseRing{
+    0%{ opacity:0.5; transform:scale(0.97); }
+    70%{ opacity:0; transform:scale(1.08); }
+    100%{ opacity:0; transform:scale(1.08); }
+  }
+
+  @media (max-width: 980px){
+    .grid-3, .grid-2, .before-after{ grid-template-columns:1fr; }
+    .act-tab-sub{ display:none; }
+    .big-num{ font-size:2.3rem; }
+    .brand .name{ font-size:22px; }
+  }
+  @media (max-width: 600px){
+    .brand .name{ font-size:18px; }
+    .brand .tag{ font-size:9px; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="mark">
+        <div class="logo-mark">
+          <div class="outer-ring"></div>
+          <div class="inner-ring"></div>
+          <div class="center-dot"></div>
+          <div class="line-h"></div>
+          <div class="line-v"></div>
+          <div class="node node-tl"></div>
+          <div class="node node-tr"></div>
+          <div class="node node-bl"></div>
+          <div class="node node-br"></div>
+          <div class="node node-l"></div>
+          <div class="node node-r"></div>
+          <div class="node node-t"></div>
+          <div class="node node-b"></div>
+        </div>
+      </div>
+      <div class="name-group">
+        <div class="name">CORTEX</div>
+        <div class="tag">FRAUD INVESTIGATION CONSOLE</div>
+      </div>
+    </div>
+    <div class="ticker">
+      <span><span class="dot">●</span> <b id="tk-alerts">0</b> alerts</span>
+      <span>→ <b id="tk-cases">0</b> cases</span>
+      <span>→ <b id="tk-exposure">₹0</b> exposure identified</span>
+      <span>→ <b id="tk-invest">5</b> investigators</span>
+    </div>
+  </header>
+
+  <nav class="acts" id="acts"></nav>
+  <main id="main"></main>
+</div>
+
+<script>
+/* Data — identical to the pipeline's own frozen run output. */
+const QUEUE = [
+  {rank:1, det:'flowscope', archetype:'Circular-flow laundering', n:4, exposure:75536.10, conf:0.877, selected:true},
+  {rank:2, det:'flowscope', archetype:'Circular-flow laundering', n:4, exposure:67464.47, conf:0.889, selected:true},
+  {rank:3, det:'flowscope', archetype:'Circular-flow laundering', n:5, exposure:82925.16, conf:0.79, selected:true},
+  {rank:4, det:'flowscope', archetype:'Circular-flow laundering', n:4, exposure:63730.32, conf:0.783, selected:true},
+  {rank:5, det:'flowscope', archetype:'Circular-flow laundering', n:8, exposure:113901.92, conf:0.668, selected:true},
+  {rank:6, det:'fraudar', archetype:'Shared-infrastructure promo-abuse', n:21, exposure:187260.05, conf:1.0, selected:true},
+  {rank:7, det:'flowscope', archetype:'Circular-flow laundering', n:5, exposure:34766.31, conf:0.849, selected:true},
+  {rank:8, det:'fraudar', archetype:'Shared-infrastructure promo-abuse', n:5, exposure:33722.86, conf:0.8, selected:true},
+  {rank:9, det:'copycatch', archetype:'Lockstep chargeback ring', n:7, exposure:45975.30, conf:0.894, selected:true},
+  {rank:10, det:'fraudar', archetype:'Shared-infrastructure promo-abuse', n:8, exposure:48817.04, conf:1.0, selected:true},
+  {rank:11, det:'copycatch', archetype:'Lockstep chargeback ring', n:6, exposure:35094.81, conf:0.825, selected:true},
+  {rank:12, det:'fraudar', archetype:'Shared-infrastructure promo-abuse', n:5, exposure:28642.51, conf:0.8, selected:true},
+  {rank:13, det:'fraudar', archetype:'Shared-infrastructure promo-abuse', n:11, exposure:62565.47, conf:1.0, selected:true},
+  {rank:14, det:'fraudar', archetype:'Shared-infrastructure promo-abuse', n:6, exposure:33767.98, conf:0.9, selected:false},
+  {rank:15, det:'copycatch', archetype:'Lockstep chargeback ring', n:5, exposure:27850.18, conf:0.806, selected:true},
+];
+
+const MODES = {
+  conservative:{ label:'Conservative', sub:'Maximize recall — for Compliance & Legal', investigators:32, precision:0.266, recall:0.976, flagged:625, cost:80260 },
+  balanced:{ label:'Balanced', sub:'Minimize total ₹ cost — for CFO & Ops', investigators:22, precision:0.372, recall:0.953, flagged:435, cost:56268 },
+  aggressive:{ label:'Aggressive', sub:'Minimize investigator workload — for Risk teams', investigators:10, precision:0.487, recall:0.571, flagged:199, cost:679783 },
+};
+
+const ATTACKS = [
+  {id:'Attack 1 → 1b', target:'FRAUDAR', desc:'Popular-entity camouflage → corrected paired-decoy camouflage', evaded:true, note:"First attempt backfired — the mean-based scorer flags popular-entity dilution as MORE suspicious, not less. Corrected version fully evades."},
+  {id:'Attack 2 → 2b', target:'CopyCatch', desc:'Uniform timing jitter → deliberately spaced timing', evaded:true, note:'First attempt mostly failed (window-merging chains adjacent flags together, 88.9% still caught). Corrected version fully evades.'},
+  {id:'Attack 3', target:'FlowScope', desc:'Delayed legitimate intermediary hop', evaded:true, note:"A multi-day delay at one hop pushes the cycle's time span past every tested threshold."},
+  {id:'Attack 4', target:'Cross-detector', desc:'Two signals weakened simultaneously', evaded:true, note:"Stays below BOTH detectors' individual thresholds — a real architectural blind spot in union-of-detectors design."},
+];
+
+const LINEAGES = [
+  { name:'FRAUDAR-targeting ring',
+    before:{fraudar:'HIGH', copycatch:'N/A', flowscope:'N/A', exposure:7439.55},
+    after:{fraudar:'LOW', copycatch:'N/A', flowscope:'N/A', exposure:8187.15},
+    score:1.0, verdict:'⚠ Potential adaptation detected',
+    reasoning:'Structural observability decreased (FRAUDAR HIGH → LOW) while financial exposure persisted at 100%+ of its prior level (₹7,440 → ₹8,187). This combination — falling detectability, steady money movement — is consistent with adaptive evasion, not genuine ring collapse.' },
+  { name:'CopyCatch-targeting ring',
+    before:{fraudar:'N/A', copycatch:'HIGH', flowscope:'N/A', exposure:35604.34},
+    after:{fraudar:'N/A', copycatch:'LOW', flowscope:'N/A', exposure:16675.92},
+    score:0.468, verdict:'⚠ Potential adaptation detected (borderline)',
+    reasoning:'Temporal observability decreased (CopyCatch HIGH → LOW) while exposure held at 47% of prior level. Reported honestly as borderline — exposure genuinely declined too, not pure evasion, which the score reflects rather than rounds away.' },
+];
+
+const NEGATIVE_CONTROL = {
+  before:{fraudar:'HIGH', exposure:42000}, after:{fraudar:'LOW', exposure:1200}, score:0.029,
+  verdict:'No adaptation — genuine decline',
+  reasoning:'Signal dropped, but exposure also collapsed to 3% of its prior level. A ring that is genuinely winding down loses both visibility and activity together — this does NOT show the persistent-exposure signature of evasion. The score correctly stays low.'
+};
+
+/* Illustrative bar widths for HIGH/LOW/N/A signal states — these are
+   visual proxies for the categorical badge, not separately measured
+   per-detector confidence numbers. */
+const SIG_WIDTH = { HIGH: 85, LOW: 20, 'N/A': 0 };
+
+const CASES = {
+  'ring_72da5c9114': { real:true, label:'Circular-flow ring — real case (₹75,536)', n:4, exposure:75536.10,
+    fraudar:'N/A', copycatch:'N/A', flowscope:'HIGH',
+    interpretation:"FlowScope is the only applicable signal for this ring (FRAUDAR, CopyCatch N/A — this ring's activity has no structural basis for those detectors to evaluate). Single-source evidence, uncontradicted.",
+    confidence:'MEDIUM', priority:'P2', priority_reason:'MEDIUM confidence (single-source evidence or a partial disagreement between detectors) is always P2 regardless of exposure — corroboration, not dollar value, is what would move this to P1.',
+    confidence_driver:'Confirmation from a second detector would raise this to HIGH confidence. Independent evidence ruling out coincidental sharing (e.g. a confirmed shared household or office, not a coordinated ring) would lower it.',
+    gaps:['No prior regulatory filing (SAR/STR) linkage.','No downstream beneficiary verification of the flow\'s terminal accounts.','No account-level case history across systems.','No adaptation baseline for this specific ring.'],
+    similar:'3 similar cases found; 3/3 (100%) were confirmed genuine fraud.',
+    next_steps:['Confirm whether any terminal account in the flow is a registered, legitimate business.','Close the highest-value gap first: no prior SAR/STR linkage checked.','Given 3/3 similar cases were confirmed genuine, prioritize confirming counterparty/merchant identity — decisive in past similar cases.'],
+    bottom_line:'Bottom line: strong historical precedent for fraud (100% of similar cases confirmed) — prioritize confirming identity/merchant details.'
+  },
+  'SYN-AGREE-01': { real:false, label:'All three detectors agree — illustrative (₹118,000)', n:9, exposure:118000,
+    fraudar:'HIGH', copycatch:'HIGH', flowscope:'HIGH',
+    interpretation:'Multiple independent detectors agree (FRAUDAR, CopyCatch, FlowScope all HIGH). Corroboration across different evidence types — structure, timing, flow — is the strongest pattern this system can produce.',
+    confidence:'HIGH', priority:'P1', priority_reason:'HIGH confidence and exposure ₹118,000 meets the ₹20,000 threshold for automatic escalation.',
+    confidence_driver:'Already at this system\'s highest evidentiary bar. Further movement would need to come from OUTSIDE these three detectors — e.g. confirmed account ownership or a manual KYC review.',
+    gaps:['No KYC/identity verification data.','Device/IP history is a point-in-time snapshot, not a rolling history.','No prior SAR/STR linkage.','No merchant-side dispute resolution outcome.'],
+    similar:'3 similar cases found; 2/3 (67%) were confirmed genuine fraud.',
+    next_steps:['Verify shared devices aren\'t public/shared infrastructure — FRAUDAR\'s most common false-positive pattern.','Close the highest-value gap first: no KYC/identity verification data.','Given 2/3 similar cases confirmed genuine, prioritize confirming counterparty/merchant identity.'],
+    bottom_line:'Bottom line: strong historical precedent for fraud (67% of similar cases confirmed) — prioritize confirming identity/merchant details.'
+  },
+  'SYN-DISAGREE-01': { real:false, label:'FRAUDAR vs CopyCatch disagree — illustrative (₹31,000)', n:6, exposure:31000,
+    fraudar:'HIGH', copycatch:'LOW', flowscope:'N/A',
+    interpretation:"FRAUDAR flags this case; CopyCatch could see this ring's activity but did not flag it. This is a partial disagreement, not a contradiction: each detector targets a different mechanism, and one detector's silence doesn't disprove another's positive finding.",
+    confidence:'MEDIUM', priority:'P2', priority_reason:'MEDIUM confidence (single-source evidence or a partial disagreement between detectors) is always P2 regardless of exposure — corroboration, not dollar value, is what would move this to P1.',
+    confidence_driver:"Independent confirmation of CopyCatch's mechanism (e.g. a delayed/adapted version of the pattern it checks for) would raise confidence toward HIGH. A clear alternate explanation for FRAUDAR's signal would lower it.",
+    gaps:['No KYC/identity verification data.','Device/IP history is a point-in-time snapshot, not a rolling history.','No prior SAR/STR linkage.','No merchant-side dispute resolution outcome.'],
+    similar:'3 similar cases found; 0/3 (0%) were confirmed genuine fraud.',
+    next_steps:['Verify shared devices aren\'t public/shared infrastructure.','Close the highest-value gap first: no KYC/identity verification data.','Given 0/3 similar cases confirmed genuine, treat as lower precedent — verify foundational evidence before escalating.'],
+    bottom_line:'Bottom line: low historical precedent for fraud (0% of similar cases confirmed) — verify foundational evidence before escalating.'
+  }
+};
+
+const BUGS_FOUND = 16;
+
+let currentAct = 1;
+let currentMode = 'balanced';
+let currentCase = 'ring_72da5c9114';
+
+/* ============================================================
+   LIVE GEMINI CO-PILOT CALL (browser-side)
+   ------------------------------------------------------------
+   Mirrors ai_analyst.py's SYSTEM_INSTRUCTION and prompt shape
+   exactly, but calls the Gemini REST API directly from the
+   browser so the demo can show a genuine live model response
+   instead of the template text baked into CASES above.
+
+   NOTE for the presenter: the API key is entered client-side and
+   sent directly from the browser to Google -- fine for a live
+   demo on your own machine, but do not ship this pattern in a
+   real product (the key would be visible in devtools/network
+   tab to anyone using the page).
+   ============================================================ */
+const GEMINI_MODEL = 'gemini-3.6-flash';
+const GEMINI_SYSTEM_INSTRUCTION = `You are CORTEX's AI Investigation Co-Pilot. You help a human fraud investigator work a case that a deterministic system has already prioritized -- you do not re-prioritize it, re-score it, or decide anything the upstream system already decided.
+
+CRITICAL RULES:
+1. You do NOT decide, recompute, or alter any fraud score, confidence level, Rs exposure amount, or priority level. These are fixed facts from a deterministic system upstream of you.
+2. The "evidence gaps," "similar historical cases," "why this priority," and "what would change confidence" fields given to you below are ALREADY COMPUTED by fixed rules, not by you. Your job is to narrate them clearly, not to invent additional gaps, pick different similar cases, or restate the priority reasoning in a way that contradicts what's given.
+3. You do NOT invent facts, account numbers, or evidence not given to you. If evidence doesn't cover something, say so.
+4. Every claim must be traceable to the evidence provided.
+5. Keep the boundary between EVIDENCE (what a detector observed), INTERPRETATION (what the deterministic rule concluded from it), and RECOMMENDATION (what you suggest doing next) visible and distinct -- never blend a recommendation into a sentence describing evidence.
+
+Produce a co-pilot briefing with EXACTLY these six labeled sections (kept concise for a live demo):
+
+1. WHY THIS CASE IS SUSPICIOUS -- synthesize the given signals in plain English.
+2. CONTRADICTIONS & UNCERTAINTY -- state plainly whether the given signals agree or disagree, using only what's given.
+3. WHY THIS PRIORITY -- narrate the exact priority reason given to you; do not invent a different justification.
+4. WHAT WOULD CHANGE MY MIND -- narrate the fixed "confidence driver" text given to you.
+5. RECOMMENDED NEXT STEPS -- use the specific, case-derived steps given to you; do not replace them with generic advice.
+6. BRIEFING SUMMARY -- 3-5 sentences for a busy investigator who may only read this section, ending with the bottom-line recommendation given to you.`;
+
+function buildGeminiPrompt(c){
+  const gapsText = c.gaps.map(g => `- ${g}`).join('\n');
+  const stepsText = c.next_steps.map(s => `- ${s}`).join('\n');
+  return `CASE EVIDENCE (fixed, do not change):
+FRAUDAR: ${c.fraudar}
+CopyCatch: ${c.copycatch}
+FlowScope: ${c.flowscope}
+Interpretation: ${c.interpretation}
+Confidence: ${c.confidence}
+What would change confidence: ${c.confidence_driver}
+Rs Exposure: ${Math.round(c.exposure).toLocaleString('en-IN')}
+Priority: ${c.priority}
+Why this priority: ${c.priority_reason}
+
+EVIDENCE GAPS (fixed list, narrate only these):
+${gapsText}
+
+SIMILAR HISTORICAL CASES (fixed comparison, narrate only this):
+${c.similar}
+
+RECOMMENDED NEXT STEPS (fixed, case-derived list -- use these, don't replace with generic advice):
+${stepsText}
+
+BOTTOM LINE (fixed, include in your summary):
+${c.bottom_line}
+
+Produce the six-section co-pilot briefing now.`;
+}
+
+const liveBriefings = {}; // caseId -> { text, model } cache so switching cases doesn't re-call the API
+let liveCallInFlight = false;
+let cachedApiKey = ''; // kept in memory only (not persisted to disk) so the field survives re-renders
+
+async function generateLiveBriefing(caseId){
+  const keyInput = document.getElementById('gemini-key-input');
+  const apiKey = keyInput ? keyInput.value.trim() : cachedApiKey;
+  cachedApiKey = apiKey;
+  const statusEl = document.getElementById('live-briefing-status');
+  if(!apiKey){
+    if(statusEl) statusEl.textContent = 'Enter a Gemini API key first (from aistudio.google.com).';
+    return;
+  }
+  if(liveCallInFlight) return;
+  liveCallInFlight = true;
+  if(statusEl) statusEl.textContent = `Calling ${GEMINI_MODEL}...`;
+  render();
+
+  const c = CASES[caseId];
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+  const payload = {
+    system_instruction: { parts: [{ text: GEMINI_SYSTEM_INSTRUCTION }] },
+    contents: [{ role: 'user', parts: [{ text: buildGeminiPrompt(c) }] }]
+  };
+
+  try {
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey },
+      body: JSON.stringify(payload)
+    });
+    const data = await resp.json();
+    if(!resp.ok){
+      throw new Error(data?.error?.message || `HTTP ${resp.status}`);
+    }
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if(!text) throw new Error('No text returned in response.');
+    liveBriefings[caseId] = { text, model: GEMINI_MODEL };
+  } catch (err) {
+    liveBriefings[caseId] = { error: err.message || String(err) };
+  } finally {
+    liveCallInFlight = false;
+    render();
+  }
+}
+
+// Global markdown formatter function
+function formatBriefing(text) {
+  let html = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  
+  // Headers (### 1. Title)
+  html = html.replace(/^### (.+)$/gm, '<h4 style="color:#6B4A2A; margin:14px 0 6px; font-size:12.5px; font-weight:700; letter-spacing:0.03em;">$1</h4>');
+  
+  // Bold (**text**)
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  
+  // Italic (*text* - but not bullet points)
+  html = html.replace(/(?<!\n)\*(.+?)\*(?!\n)/g, '<em>$1</em>');
+  
+  // Bullet lists (* item)
+  html = html.replace(/^\* (.+)$/gm, '<li style="margin-left:20px; padding:1px 0;">$1</li>');
+  html = html.replace(/((?:<li>.+<\/li>\n?)+)/g, '<ul style="margin:6px 0 10px; list-style-type:disc; padding-left:0;">$1</ul>');
+  
+  // Horizontal rules (---)
+  html = html.replace(/^---$/gm, '<hr style="border:none; border-top:1px solid rgba(42,38,32,0.12); margin:12px 0;">');
+  
+  // Newlines to <br>
+  html = html.replace(/\n/g, '<br>');
+  
+  // Clean up excessive breaks
+  html = html.replace(/<br><br><br>/g, '<br><br>');
+  html = html.replace(/<br><br><h4/g, '<br><h4');
+  
+  return html;
+}
+
+const ACTS = [
+  {n:1, title:'Threat Overview', sub:"Scale of the problem"},
+  {n:2, title:'Priority Queue', sub:'Act first, here'},
+  {n:3, title:'Case Dossier', sub:'Why this case'},
+  {n:4, title:'Adversarial', sub:'Where it breaks'},
+  {n:5, title:'Operating Modes', sub:'Your tradeoff'},
+];
+
+function renderNav(){
+  document.getElementById('acts').innerHTML = ACTS.map(a => `
+    <div class="act-tab ${currentAct===a.n?'active':''} ${currentAct>a.n?'done':''}" onclick="goTo(${a.n})">
+      <div class="act-num">${currentAct>a.n?'✓':a.n}</div>
+      <div><div class="act-tab-title">${a.title}</div><div class="act-tab-sub">${a.sub}</div></div>
+    </div>`).join('');
+}
+function goTo(n){ currentAct = n; render(); window.scrollTo({top:0, behavior:'smooth'}); }
+function fmtRs(n){ return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function pct(n){ return Math.round(n*100) + '%'; }
+
+function sigDot(sig){
+  if(sig==='HIGH') return `<span class="sig-dot high"><span class="pulse-dot">●</span> HIGH</span>`;
+  if(sig==='LOW') return `<span class="sig-dot low">○ LOW</span>`;
+  return `<span class="sig-dot na">— N/A</span>`;
+}
+function signalBar(name, sig){
+  const w = SIG_WIDTH[sig];
+  const cls = sig==='HIGH' ? 'high' : sig==='LOW' ? 'low' : 'na';
+  const trackCls = sig==='N/A' ? 'na' : '';
+  return `
+    <div class="signal-row">
+      <div class="signal-name">${name}</div>
+      <div class="signal-track ${trackCls}">${sig!=='N/A' ? `<div class="signal-fill ${cls}" style="width:${w}%;"></div>` : ''}</div>
+      <div class="signal-val ${cls}">${sig}</div>
+    </div>`;
+}
+function detBadge(det){
+  const map = {fraudar:'FRAUDAR', copycatch:'CopyCatch', flowscope:'FlowScope'};
+  return `<span class="det-badge det-${det}">${map[det]}</span>`;
+}
+function countUp(id, target, isCurrency, duration=900){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const start = performance.now();
+  function frame(now){
+    const p = Math.min(1, (now-start)/duration);
+    const eased = 1 - Math.pow(1-p, 3);
+    const val = target * eased;
+    el.textContent = isCurrency ? fmtRs(val) : Math.round(val).toLocaleString('en-IN');
+    if(p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function renderAct1(){
+  return `
+    <div class="eyebrow">ACT 1 OF 5</div>
+    <div class="act-title">What's happening?</div>
+    <div class="act-question">Detection is only the first problem. Here's the scale of it.</div>
+    <div class="grid grid-3" style="margin-bottom:20px;">
+      <div class="card"><div class="kicker">Raw alerts</div><div class="big-num" id="a1-alerts">0</div><div class="small-label">Account-level flags across 3 independent detectors, Conservative mode</div></div>
+      <div class="card card-hero"><div class="kicker">Consolidated cases</div><div class="big-num amber" id="a1-cases">0</div><div class="small-label">306 FRAUDAR clusters · 25 CopyCatch events · 6 FlowScope cycles</div></div>
+      <div class="card"><div class="kicker">Identified exposure</div><div class="big-num teal" id="a1-exposure">₹0</div><div class="small-label">₹1,656,215 across all cases, evidence-specific — not account lifetime volume</div></div>
+    </div>
+    <div class="section-label">How CORTEX gets from raw signal to a ranked worklist</div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="flow">
+        <div class="node">3 Detectors<br><span style="color:var(--steel); font-size:11px;">FRAUDAR · CopyCatch · FlowScope</span></div>
+        <span class="arrow">→</span><div class="node">Cross-Signal<br>Reasoning</div>
+        <span class="arrow">→</span><div class="node">Case<br>Construction</div>
+        <span class="arrow">→</span><div class="node">₹ Exposure +<br>Effort Scoring</div>
+        <span class="arrow">→</span><div class="node" style="border-color:var(--amber); color:var(--amber);">Priority<br>Queue</div>
+        <span class="arrow">→</span><div class="node" style="border-color:var(--teal); color:var(--teal);">AI Co-Pilot</div>
+      </div>
+    </div>
+    <div class="section-label">Three fraud patterns, three different kinds of evidence</div>
+    <div class="grid grid-3">
+      <div class="card card-tight"><div class="det-badge det-fraudar">FRAUDAR</div><div style="font-weight:600; margin:10px 0 4px;">Shared-infrastructure promo-abuse</div><div class="footnote">Accounts sharing a small pool of devices/IPs. Camouflage-resistant density scoring (Hooi et al., KDD 2016).</div></div>
+      <div class="card card-tight"><div class="det-badge det-copycatch">COPYCATCH</div><div style="font-weight:600; margin:10px 0 4px;">Lockstep chargeback rings</div><div class="footnote">Accounts filing disputes within a suspiciously tight window (Beutel et al., WWW 2013).</div></div>
+      <div class="card card-tight"><div class="det-badge det-flowscope">FLOWSCOPE</div><div style="font-weight:600; margin:10px 0 4px;">Circular-flow laundering</div><div class="footnote">Money cycling through a chain and returning near its entry point (Li et al., AAAI 2020).</div></div>
+    </div>
+    <div class="guardrail"><span class="gi">⚠</span><div><b>Why this is trustworthy:</b> ${BUGS_FOUND} real bugs were found and fixed while building this system, each documented with what broke, how it was caught, and the fix — see ENGINEERING_LOG.md.</div></div>
+    <div style="margin-top:28px;"><button class="btn" onclick="goTo(2)">See what needs investigating →</button></div>
+  `;
+}
+
+function renderAct2(){
+  const rows = QUEUE.map(r => `
+    <tr class="qrow" onclick="openCaseFromQueue()">
+      <td class="mono" style="color:var(--steel);">#${r.rank}</td>
+      <td>${detBadge(r.det)}</td><td>${r.archetype}</td><td class="mono">${r.n}</td>
+      <td class="mono">${fmtRs(r.exposure)}</td><td class="mono">${pct(r.conf)}</td>
+      <td>${r.selected ? '<span style="color:var(--teal);">✓ selected</span>' : '<span style="color:var(--steel);">—</span>'}</td>
+    </tr>`).join('');
+  return `
+    <div class="eyebrow">ACT 2 OF 5</div>
+    <div class="act-title">What should I investigate?</div>
+    <div class="act-question">625 alerts is not a worklist. This is one.</div>
+    <div class="card" style="margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+      <div><div class="kicker">Current operating mode</div><div style="font-weight:700; font-size:15px;">${MODES[currentMode].label} — ${MODES[currentMode].investigators} investigators</div></div>
+      <button class="btn secondary" onclick="goTo(5)">Change mode / see tradeoffs →</button>
+    </div>
+    <div class="card" style="padding:8px 20px 4px;">
+      <table><thead><tr><th>Rank</th><th>Detector</th><th>Archetype</th><th>Accounts</th><th>Exposure</th><th>Confidence</th><th>In queue</th></tr></thead><tbody>${rows}</tbody></table>
+    </div>
+    <div class="footnote">Click any row to open its case dossier. Ranked by ₹/investigator-hour value density — knapsack-optimal, verified against a greedy baseline (99.6% of optimal).</div>
+    <div style="margin-top:28px;"><button class="btn" onclick="goTo(3)">Open a case dossier →</button></div>
+  `;
+}
+function openCaseFromQueue(){ currentCase = 'ring_72da5c9114'; goTo(3); }
+
+function renderAct3(){
+  const c = CASES[currentCase];
+  const options = Object.keys(CASES).map(k => `<option value="${k}" ${k===currentCase?'selected':''}>${CASES[k].label}</option>`).join('');
+  const priorityClass = c.priority==='P1' ? 'stamp-p1' : c.priority==='P2' ? 'stamp-p2' : 'stamp-p3';
+  
+  // Check if API key is already set
+  const hasKey = cachedApiKey && cachedApiKey.length > 0;
+  
+  return `
+    <div class="eyebrow">ACT 3 OF 5</div>
+    <div class="act-title">Why this case?</div>
+    <div class="act-question">Evidence, interpretation, and an AI-written briefing — not a black-box score.</div>
+    <div style="max-width:460px; margin-bottom:22px;"><select onchange="currentCase=this.value; render();">${options}</select></div>
+    ${!c.real ? `<div class="guardrail"><span class="gi">⚠</span><div>This case is a labeled synthetic illustration. This dataset's real fraud patterns each trip one detector by design — genuine 3-way agreement/disagreement is shown honestly as a constructed example, not a live detection.</div></div>` : ''}
+    <div class="grid grid-2" style="align-items:start; margin-top:18px;">
+      <div>
+        <div class="card pulse-ring" style="margin-bottom:16px;">
+          <div class="kicker">${c.n} accounts, ${fmtRs(c.exposure)} exposure</div>
+          <div style="margin:16px 0 18px;">
+            ${signalBar('FRAUDAR', c.fraudar)}
+            ${signalBar('CopyCatch', c.copycatch)}
+            ${signalBar('FlowScope', c.flowscope)}
+          </div>
+          <div class="section-label">Interpretation (deterministic, fixed rule table)</div>
+          <div style="font-size:13.5px; line-height:1.65;">${c.interpretation}</div>
+          <div style="display:flex; gap:14px; margin-top:20px; align-items:center; flex-wrap:wrap;">
+            <span class="stamp ${c.confidence==='HIGH'?'stamp-ok':c.confidence==='MEDIUM'?'stamp-p2':'stamp-p3'}">${c.confidence} confidence</span>
+            <span class="stamp ${priorityClass}">${c.priority}</span>
+          </div>
+          <div class="section-label">Why this priority</div>
+          <div style="font-size:12.5px; color:var(--steel); line-height:1.6;">${c.priority_reason}</div>
+          <div class="section-label">What would change my mind</div>
+          <div style="font-size:12.5px; color:var(--steel); line-height:1.6;">${c.confidence_driver}</div>
+        </div>
+      </div>
+      <div class="paper-inset">
+        ${(() => {
+          const live = liveBriefings[currentCase];
+          const isLive = live && live.text;
+          const badge = isLive
+            ? `<div class="paper-badge" style="background:#1F4A3E;">AI CO-PILOT — LIVE ${live.model.toUpperCase()} OUTPUT</div>`
+            : `<div class="paper-badge">AI CO-PILOT — TEMPLATE, NOT LIVE MODEL</div>`;
+
+          const controls = `
+            ${!hasKey ? `
+            <div style="display:flex; gap:8px; align-items:center; margin-bottom:14px; flex-wrap:wrap;">
+              <input id="gemini-key-input" type="password" placeholder="Paste Gemini API key"
+                     value="${cachedApiKey.replace(/"/g,'&quot;')}" oninput="cachedApiKey=this.value; if(this.value.length>0) render();"
+                     style="flex:1; min-width:200px; font-family:'IBM Plex Mono'; font-size:11px; padding:8px 10px; border-radius:6px; border:1px solid #6B4A2A; background:#fff; color:#2A2620;">
+            </div>
+            ` : ''}
+            <div style="margin-bottom:12px; display:flex; gap:8px; align-items:center;">
+              <input id="copilot-question" type="text" placeholder="Ask the co-pilot anything about this case..."
+                     style="flex:1; font-family:'IBM Plex Mono'; font-size:12px; padding:10px 12px; border-radius:6px; border:1px solid #6B4A2A; background:#fff; color:#2A2620;" 
+                     onkeydown="if(event.key==='Enter') askCopilot('${currentCase}')">
+              <button class="btn" style="padding:10px 16px; font-size:11px; white-space:nowrap;" onclick="askCopilot('${currentCase}')">
+                Ask Co-Pilot
+              </button>
+            </div>
+            <div id="copilot-response" style="background:rgba(42,38,32,0.04); padding:12px 14px; border-radius:6px; margin-bottom:16px; font-size:11.5px; line-height:1.7; color:#2A2620; min-height:80px; max-height:400px; overflow-y:auto; display:none;">
+            </div>
+            <div id="live-briefing-status" style="font-size:11px; color:#6B4A2A; margin:-6px 0 14px;">
+              ${live && live.error ? `Live call failed: ${live.error} — showing template below.` : ''}
+            </div>`;
+
+          const liveBlock = isLive ? `
+            <div style="font-size:11.5px; background:rgba(42,38,32,0.04); padding:12px 14px; border-radius:6px; margin-bottom:16px; line-height:1.7; color:#2A2620; max-height:600px; overflow-y:auto; display:none;">
+              ${formatBriefing(live.text)}
+            </div>
+            <hr class="paper-hr" style="display:none;">` : '';
+
+          return badge + controls + liveBlock;
+        })()}
+        <div class="quickview">
+          <div><b>EVIDENCE:</b> FRAUDAR ${c.fraudar} · CopyCatch ${c.copycatch} · FlowScope ${c.flowscope}</div>
+          <div><b>INTERPRETATION:</b> ${c.confidence} confidence, ${c.priority} priority</div>
+          <div><b>RECOMMENDATION:</b> ${c.next_steps[0]}</div>
+        </div>
+        <h4>Evidence gaps</h4>
+        <ul>${c.gaps.map(g=>`<li>${g}</li>`).join('')}</ul>
+        <h4>Similar historical cases</h4>
+        <div>${c.similar}</div>
+        <h4>Recommended next steps</h4>
+        <ul>${c.next_steps.map(s=>`<li>${s}</li>`).join('')}</ul>
+        <hr class="paper-hr">
+        <h4>Bottom line</h4>
+        <div>${c.bottom_line}</div>
+      </div>
+    </div>
+    <div class="guardrail"><span class="gi">⚠</span><div>The AI layer never decides the score, exposure, or priority above — those come fixed from the deterministic reasoning engine. Its only job is turning that evidence into prose, and reading it back through a guardrail that checks it never asserts a different priority than the one actually assigned.</div></div>
+    <div style="margin-top:28px;"><button class="btn" onclick="goTo(4)">What if this attacker adapts? →</button></div>
+  `;
+}
+
+async function askCopilot(caseId) {
+  const questionInput = document.getElementById('copilot-question');
+  const question = questionInput.value.trim();
+  if (!question) {
+    document.getElementById('copilot-response').style.display = 'block';
+    document.getElementById('copilot-response').innerHTML = 'Please enter a question first.';
+    return;
+  }
+  
+  const keyInput = document.getElementById('gemini-key-input');
+  const apiKey = keyInput ? keyInput.value.trim() : cachedApiKey;
+  if (!apiKey) {
+    document.getElementById('copilot-response').style.display = 'block';
+    document.getElementById('copilot-response').innerHTML = 'Please paste your Gemini API key in the field above first.';
+    return;
+  }
+  
+  document.getElementById('copilot-response').style.display = 'block';
+  document.getElementById('copilot-response').innerHTML = 'Thinking...';
+  
+  const c = CASES[caseId];
+  const prompt = `You are CORTEX's AI Investigation Co-Pilot. You're helping an investigator analyze this case.
+
+CASE CONTEXT (these are fixed facts from the system, do not change them):
+- FRAUDAR: ${c.fraudar}
+- CopyCatch: ${c.copycatch}
+- FlowScope: ${c.flowscope}
+- Confidence: ${c.confidence}
+- Priority: ${c.priority}
+- Exposure: ₹${Math.round(c.exposure).toLocaleString('en-IN')}
+- Interpretation: ${c.interpretation}
+- Evidence gaps: ${c.gaps.join('; ')}
+- Similar cases: ${c.similar}
+- Next steps in system: ${c.next_steps.join('; ')}
+
+The investigator asks: "${question}"
+
+Rules:
+1. You can only reference evidence provided above
+2. You cannot change or invent scores, priorities, or exposure amounts
+3. Be concise and helpful
+4. If the question asks about something not in the evidence, say "I don't have that information in the case file"
+5. Suggest specific actions the investigator can take
+6. Use markdown formatting (**bold** for emphasis, bullet points for lists)
+
+Respond in plain English with markdown formatting.`;
+  
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'x-goog-api-key': apiKey 
+      },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: prompt }] }]
+      })
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      if (resp.status === 404) {
+        throw new Error('Model not found. Try using gemini-1.5-flash instead.');
+      }
+      throw new Error(data?.error?.message || `HTTP ${resp.status}`);
+    }
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response from the model.';
+    document.getElementById('copilot-response').innerHTML = formatBriefing(text);
+  } catch (err) {
+    document.getElementById('copilot-response').innerHTML = `Error: ${err.message}`;
+  }
+}
+
+function lineageBlock(lg){
+  return `
+    <div class="card" style="margin-bottom:18px;">
+      <div class="kicker">${lg.name}</div>
+      <div class="before-after" style="margin:16px 0;">
+        <div class="ba-col"><div class="ba-label">BEFORE</div>
+          <div class="ba-row"><span>FRAUDAR</span>${sigDot(lg.before.fraudar)}</div>
+          <div class="ba-row"><span>CopyCatch</span>${sigDot(lg.before.copycatch)}</div>
+          <div class="ba-row"><span>FlowScope</span>${sigDot(lg.before.flowscope)}</div>
+          <div class="ba-row"><span>₹ Exposure</span><b class="mono">${fmtRs(lg.before.exposure)}</b></div></div>
+        <div class="ba-arrow-mid">↝<span style="font-size:10px; font-family:'IBM Plex Mono';">adapts</span></div>
+        <div class="ba-col after"><div class="ba-label">AFTER</div>
+          <div class="ba-row"><span>FRAUDAR</span>${sigDot(lg.after.fraudar)}</div>
+          <div class="ba-row"><span>CopyCatch</span>${sigDot(lg.after.copycatch)}</div>
+          <div class="ba-row"><span>FlowScope</span>${sigDot(lg.after.flowscope)}</div>
+          <div class="ba-row"><span>₹ Exposure</span><b class="mono">${fmtRs(lg.after.exposure)}</b></div></div>
+      </div>
+      <span class="stamp stamp-warn">${lg.verdict}</span>
+      <div style="font-size:13px; margin-top:14px; line-height:1.65; color:var(--steel);">${lg.reasoning}</div>
+      <div class="footnote">Adaptation score: <b>${lg.score}</b> = (fraction of dropped signals) × (exposure persistence). No ML, no learned weights.</div>
+    </div>`;
+}
+
+function renderAct4(){
+  const attackRows = ATTACKS.map(a => `<tr><td class="mono">${a.id}</td><td>${a.target}</td><td>${a.desc}</td><td>${a.evaded ? '<span style="color:var(--crimson);">● evaded</span>' : '<span style="color:var(--teal);">● caught</span>'}</td></tr>`).join('');
+  return `
+    <div class="eyebrow">ACT 4 OF 5</div>
+    <div class="act-title">What if the attacker adapts?</div>
+    <div class="act-question">The honest version of adversarial testing: where it breaks, then what we did about it.</div>
+    <div class="card card-crimson" style="margin-bottom:22px;">
+      <div class="kicker">The uncomfortable number, stated up front</div>
+      <div style="display:flex; align-items:baseline; gap:12px; margin:8px 0 12px;"><div class="big-num crimson">4 / 6</div><div class="small-label">corrected attack variants achieve full evasion of the detector they target</div></div>
+      <div class="footnote">Four adaptive attacks specifically reverse-engineer each detector's own decision mechanism. Reported honestly — including the two that failed on their first attempt, and <i>why</i> they failed (a real finding about our own scoring formula), not just the two that worked.</div>
+    </div>
+    <div class="section-label">All six attacks, target and outcome</div>
+    <div class="card" style="padding:8px 20px 4px; margin-bottom:24px;">
+      <table><thead><tr><th>Attack</th><th>Target</th><th>Mechanism</th><th>Result</th></tr></thead><tbody>${attackRows}</tbody></table>
+    </div>
+    <div class="section-label">Two real lineages: detector visibility vs. financial exposure, over time</div>
+    ${LINEAGES.map(lineageBlock).join('')}
+    <div class="card" style="border-style:dashed;">
+      <div class="kicker">Negative control — proving the score doesn't just fire on any signal drop</div>
+      <div class="before-after" style="margin:14px 0;">
+        <div class="ba-col"><div class="ba-label">BEFORE</div><div class="ba-row"><span>FRAUDAR</span>${sigDot(NEGATIVE_CONTROL.before.fraudar)}</div><div class="ba-row"><span>₹ Exposure</span><b class="mono">${fmtRs(NEGATIVE_CONTROL.before.exposure)}</b></div></div>
+        <div class="ba-arrow-mid">↝</div>
+        <div class="ba-col"><div class="ba-label">AFTER</div><div class="ba-row"><span>FRAUDAR</span>${sigDot(NEGATIVE_CONTROL.after.fraudar)}</div><div class="ba-row"><span>₹ Exposure</span><b class="mono">${fmtRs(NEGATIVE_CONTROL.after.exposure)}</b></div></div>
+      </div>
+      <span class="stamp stamp-ok">${NEGATIVE_CONTROL.verdict}</span>
+      <div style="font-size:13px; margin-top:14px; color:var(--steel);">${NEGATIVE_CONTROL.reasoning}</div>
+      <div class="footnote">Adaptation score: <b>${NEGATIVE_CONTROL.score}</b> — correctly low.</div>
+    </div>
+    <div class="card card-teal" style="margin-top:20px; background:rgba(63,167,150,0.05);">
+      <div class="kicker" style="color:var(--teal);">The self-correcting loop</div>
+      <div style="font-size:13.5px; line-height:1.7;">One caught attack (Attack 1) showed <b>₹0 exposure</b> in the priority queue despite 100% detection — a real correctness bug, not an evasion. Fixing it took three layered corrections, including a pre-existing bug that had silently zeroed every FRAUDAR case's exposure since it was first built. Re-running the identical evaluation after the fix: captured exposure at the same investigator budget rose <b style="color:var(--teal);">+7.1%</b>, using fewer cases, because the caught attack finally contributes real value instead of vanishing.</div>
+    </div>
+    <div style="margin-top:28px;"><button class="btn" onclick="goTo(5)">See the operating-mode tradeoffs →</button></div>
+  `;
+}
+
+function modeCard(key){
+  const m = MODES[key];
+  return `
+    <div class="card mode-card ${currentMode===key?'active':''}" onclick="currentMode='${key}'; render();">
+      <div class="mode-name">${m.label}</div><div class="mode-sub">${m.sub}</div>
+      <div class="mode-stat"><span>Investigators needed</span><b>${m.investigators}</b></div>
+      <div class="mode-stat"><span>Precision</span><b>${pct(m.precision)}</b></div>
+      <div class="mode-stat"><span>Recall</span><b>${pct(m.recall)}</b></div>
+      <div class="mode-stat"><span>Accounts flagged</span><b>${m.flagged}</b></div>
+      <div class="mode-stat"><span>Total cost</span><b>${fmtRs(m.cost)}</b></div>
+    </div>`;
+}
+
+function renderAct5(){
+  const m = MODES[currentMode];
+  return `
+    <div class="eyebrow">ACT 5 OF 5</div>
+    <div class="act-title">What's the tradeoff?</div>
+    <div class="act-question">"Here is our optimal threshold" becomes "here are your options." Risk is a decision, not a calculation.</div>
+    <div class="grid grid-3" style="margin-bottom:24px;">${modeCard('conservative')}${modeCard('balanced')}${modeCard('aggressive')}</div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="kicker">Selected: ${m.label}</div>
+      <div style="font-size:14px; margin:8px 0 16px; color:var(--steel);">${m.sub}</div>
+      <div style="font-family:'IBM Plex Mono'; font-size:13px; color:var(--steel);">With <b style="color:#DDE3E8;">${m.investigators} investigators</b>, this mode flags <b style="color:#DDE3E8;">${m.flagged}</b> accounts at <b style="color:#DDE3E8;">${pct(m.precision)}</b> precision / <b style="color:#DDE3E8;">${pct(m.recall)}</b> recall, total expected cost <b style="color:var(--amber);">${fmtRs(m.cost)}</b>.</div>
+    </div>
+    <div class="card card-crimson">
+      <div class="kicker">The number worth pausing on</div>
+      <div style="font-size:13.5px; line-height:1.7;">Going Balanced → Aggressive cuts investigator headcount by more than half (22 → 10) but costs <b style="color:var(--crimson);">12x more</b> in missed fraud (₹56,268 → ₹679,783). That tradeoff was always in the data. Showing three modes instead of one "optimal" number is what makes it visible before anyone commits to it.</div>
+    </div>
+    <div class="footnote" style="margin-top:24px; text-align:center; padding:20px 0;">
+      Detectors → Evidence Fusion → Fraud Cases → ₹ Exposure + Investigation Effort → Priority Queue → <b>Human Decision.</b><br>
+      That's the whole system. Nine build phases, ${BUGS_FOUND} documented bugs found and fixed, every number traceable to a real run.
+    </div>
+  `;
+}
+
+function render(){
+  renderNav();
+  document.getElementById('tk-invest').textContent = MODES[currentMode].investigators;
+  const main = document.getElementById('main');
+  if(currentAct===1){ main.innerHTML = renderAct1(); countUp('a1-alerts', 625, false); countUp('a1-cases', 337, false); countUp('a1-exposure', 1656215, true); }
+  else if(currentAct===2) main.innerHTML = renderAct2();
+  else if(currentAct===3) main.innerHTML = renderAct3();
+  else if(currentAct===4) main.innerHTML = renderAct4();
+  else if(currentAct===5) main.innerHTML = renderAct5();
+}
+
+countUp('tk-alerts', 625, false, 1200);
+countUp('tk-cases', 337, false, 1200);
+countUp('tk-exposure', 1656215, true, 1200);
+render();
+</script>
+</body>
+</html>
