@@ -1,4 +1,4 @@
-```md
+
 # Engineering Log
 
 This log is intentionally specific and unpolished. The point isn't to show a clean success story — it's to show that failures were caught, diagnosed correctly, and fixed with evidence, not guesswork. Every entry below is a real bug encountered while building Phase 1 and Phase 2, in the order it happened.
