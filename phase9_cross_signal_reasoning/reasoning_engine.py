@@ -10,7 +10,7 @@ applied to the three detectors' HIGH/LOW/N-A readings. There is nothing
 learned or opaque here -- the full rule table is written to disk as its
 own auditable artifact (see write_rule_table_reference below).
 
-A note on what our data can and cannot demonstrate, stated up front rather
+A note on what the data can and cannot demonstrate, stated up front rather
 than glossed over: this dataset's three fraud archetypes are each
 constructed to trip essentially one detector (Phase 1's design), so most
 REAL cases in this dataset show exactly one HIGH signal and two N/A
