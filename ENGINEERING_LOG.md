@@ -1,3 +1,4 @@
+```md
 # Engineering Log
 
 This log is intentionally specific and unpolished. The point isn't to show a clean success story — it's to show that failures were caught, diagnosed correctly, and fixed with evidence, not guesswork. Every entry below is a real bug encountered while building Phase 1 and Phase 2, in the order it happened.
@@ -6,15 +7,15 @@ This log is intentionally specific and unpolished. The point isn't to show a cle
 
 ## Entry 1 — Camouflage that didn't actually camouflage anything
 
-**What we built first:** A "hard" difficulty tier for injected fraud rings that added more filler transactions and wider timing jitter around ring members.
+**What was built first:** A "hard" difficulty tier for injected fraud rings that added more filler transactions and wider timing jitter around ring members.
 
 **What was wrong:** This is generic noise, not the camouflage mechanism the detection research (FRAUDAR) is actually built to resist. FRAUDAR's specific guarantee is about fraud accounts adding edges toward *already-popular, high-degree legitimate targets* — that's what dilutes a density-based suspiciousness score. Generic filler volume doesn't exploit that mechanism at all.
 
-**How we caught it:** Direct challenge during design review, not automated testing — the gap was conceptual, not something a unit test would catch.
+**How it was caught:** Direct challenge during design review, not automated testing — the gap was conceptual, not something a unit test would catch.
 
 **Fix:** Rebuilt the "hard" tier to add targeted edges toward the top-20%-by-degree legitimate merchants, using a fresh personal device/IP rather than the ring's shared infrastructure.
 
-**Verification, not assumption:** We measured it. Honest customers averaged ~25.6 distinct merchants over the 90-day window; our first "fixed" version of camouflage only got hard-tier ring members to ~4.6 — nowhere close. Recalibrated the camouflage-edge count until hard-tier accounts reached ~20.8, the same order of magnitude as the honest baseline. Only then was the camouflage claim actually true.
+**Verification, not assumption:** The effect was measured. Honest customers averaged ~25.6 distinct merchants over the 90-day window; the first "fixed" version of camouflage only got hard-tier ring members to ~4.6 — nowhere close. Recalibrated the camouflage-edge count until hard-tier accounts reached ~20.8, the same order of magnitude as the honest baseline. Only then was the camouflage claim actually true.
 
 ---
 
@@ -22,7 +23,7 @@ This log is intentionally specific and unpolished. The point isn't to show a cle
 
 **What was wrong:** The Entry 1 fix added camouflage edges toward popular *merchants*. But FRAUDAR's primary target for the shared-infrastructure ring archetype is the account↔device/IP sharing graph — a structurally different graph from the account↔merchant transaction graph. Merchant-camouflage does nothing to the device/IP graph at all.
 
-**How we caught it:** Directly checked whether ring members' persistent device/IP records (`account_device_map.csv`) changed across camouflage tiers. They didn't — 1.31 → 1.62 → 1.12 devices per account, essentially flat noise, while the merchant-transaction graph showed the intended effect clearly (2.1 → 7.6 → 21.1). Confirmed the two mechanisms were operating on two different graphs.
+**How it was caught:** Directly checked whether ring members' persistent device/IP records (`account_device_map.csv`) changed across camouflage tiers. They didn't — 1.31 → 1.62 → 1.12 devices per account, essentially flat noise, while the merchant-transaction graph showed the intended effect clearly (2.1 → 7.6 → 21.1). Confirmed the two mechanisms were operating on two different graphs.
 
 **Fix:** Added a second, separate camouflage mechanism specifically for the device/IP graph — ring members connect to already-popular devices/IPs (computed from the honest baseline), not just popular merchants.
 
@@ -52,7 +53,7 @@ This log is intentionally specific and unpolished. The point isn't to show a cle
 
 **What happened:** With minimum block size in place, the largest found block ballooned to 776 accounts (precision ~0.01) — the true ring was inside it, but so was almost everyone else.
 
-**Diagnosis:** The account-level suspicion score was computed as the **sum** of an account's weighted edges. Summing rewards an account for having *more* edges — including the low-weight camouflage edges we deliberately added — which is backwards: a fraudster adding camouflage connections should look *less* suspicious, not more.
+**Diagnosis:** The account-level suspicion score was computed as the **sum** of an account's weighted edges. Summing rewards an account for having *more* edges — including the low-weight camouflage edges deliberately added — which is backwards: a fraudster adding camouflage connections should look *less* suspicious, not more.
 
 **Fix:** Switched the score to the **mean** edge weight per account, not the sum.
 
@@ -62,7 +63,7 @@ This log is intentionally specific and unpolished. The point isn't to show a cle
 
 ## Entry 6 — A dataset gap that would have made the next detector's numbers meaningless
 
-**What we were about to do:** Run CopyCatch-lite (time-window lockstep detector) against the existing dataset and report its precision/recall.
+**What was about to happen:** Run CopyCatch-lite (time-window lockstep detector) against the existing dataset and report its precision/recall.
 
 **What was wrong:** Checked the transaction-type distribution first, out of habit from Entries 3-5. Found that **100% of chargebacks in the dataset were ring-generated** — the generator never produced an independent, uncorrelated chargeback. This means any chargeback-clustering algorithm would score artificially perfectly: there was no legitimate chargeback noise to distinguish signal from, so "precision 1.0" would have meant nothing.
 
@@ -86,7 +87,7 @@ This log is intentionally specific and unpolished. The point isn't to show a cle
 
 **What we saw:** FlowScope-lite (circular-flow cycle detector) scored precision 1.00, recall 1.00 across all three camouflage tiers on the first working run.
 
-**Why we didn't just report it:** a perfect score with zero variation across difficulty tiers is exactly the kind of result that should be checked, not celebrated. Two checks, before trusting it:
+**Why it wasn't just reported:** a perfect score with zero variation across difficulty tiers is exactly the kind of result that should be checked, not celebrated. Two checks, before trusting it:
 
 1. **Are the thresholds actually doing anything, or trivially passing everything?** Tightened `max_span_minutes` from 180 to 20 — hard-tier recall dropped to 0% while easy-tier stayed at 100%. Confirms the filtering is real.
 2. **Why is hard-tier not harder than easy-tier?** Traced this to the generator itself: the "hard" camouflage reroute (`_inject_circular_flow_ring`, hard branch) adds one extra edge to a legitimate-looking merchant but never removes or replaces a hop in the actual cycle. The full cycle survives structurally intact regardless of camouflage level — so equal recall across tiers reflects a gap in the camouflage design, not genuine resistance being demonstrated.
@@ -127,7 +128,7 @@ This log is intentionally specific and unpolished. The point isn't to show a cle
 
 **Phase 5 (Fusion):** the fused result's combined precision (0.37) is dominated by FRAUDAR-lite's false positives — the cost-sensitive sweep makes this visible rather than hiding it inside one blended number, and the assumed ₹150 review cost is stated explicitly as a placeholder, not presented as a measured figure.
 
-We're stating all of this directly rather than tuning any of it to hide behind a single flattering number.
+All of this is stated directly rather than tuning any of it to hide behind a single flattering number.
 
 ---
 
@@ -145,11 +146,11 @@ We're stating all of this directly rather than tuning any of it to hide behind a
 
 ## Entry 12 — Two adversarial attacks that backfired, and why that's a real finding, not a failed attack
 
-**Attack 1 (naive popular-entity camouflage spam) achieved 0% evasion — FRAUDAR-lite caught 100% of it, at a LOWER (more suspicious) score than the baseline dataset's own "hard" tier.** Checking why: the attack added more edges toward already-popular devices, assuming that would dilute the account's score. But our actual detector scores by **mean** edge weight (fixed to mean specifically in Phase 2 Entry 5, away from an earlier sum-based bug), and popular entities carry *low* weight under `1/log(degree+2)`. Adding more low-weight edges pulls an account's *mean* **down**, not up — the attack targeted a sum-based vulnerability we had already fixed away from, not the defense that's actually running. Built the corrected version (Attack 1b): pairing each ring member with fresh one-off decoy accounts on new degree-2 devices, mimicking the exact statistical pattern that gives honest accounts their high baseline score. Attack 1b achieved full, genuine evasion (0% recall).
+**Attack 1 (naive popular-entity camouflage spam) achieved 0% evasion — FRAUDAR-lite caught 100% of it, at a LOWER (more suspicious) score than the baseline dataset's own "hard" tier.** Checking why: the attack added more edges toward already-popular devices, assuming that would dilute the account's score. But the actual detector scores by **mean** edge weight (fixed to mean specifically in Phase 2 Entry 5, away from an earlier sum-based bug), and popular entities carry *low* weight under `1/log(degree+2)`. Adding more low-weight edges pulls an account's *mean* **down**, not up — the attack targeted a sum-based vulnerability that had already been fixed away from, not the defense that's actually running. Built the corrected version (Attack 1b): pairing each ring member with fresh one-off decoy accounts on new degree-2 devices, mimicking the exact statistical pattern that gives honest accounts their high baseline score. Attack 1b achieved full, genuine evasion (0% recall).
 
 **Attack 2 (uniform random timing jitter, ±150 minutes) achieved only 11% evasion (88.9% still caught) — checked why rather than assuming the jitter was simply too weak.** CopyCatch-lite's merge-overlapping-windows step can chain adjacent flagged sub-windows into a much wider effective span than the configured window parameter — a 60-minute window setting caught a 147-minute-wide cluster by daisy-chaining. This is an emergent robustness property of the simple two-pointer-plus-merge design, not something deliberately engineered. Built the corrected version (Attack 2b): deliberately spacing every participant's timestamp by more than any tested window width, so no two participants are ever close enough for the chaining mechanism to link them. Attack 2b achieved full evasion (0% recall).
 
-**Also corrected Attack 4 (cross-detector) for the same reason as Attack 1** — its first version used the same backfiring popular-entity camouflage for its device-sharing component, so FRAUDAR catching it 100% told us nothing about the intended cross-detector blind spot. Rebuilt using the corrected paired-decoy technique at reduced strength. Result: full evasion (0% recall on all three detectors), confirming the hypothesized architectural gap — a ring that stays below each individual detector's threshold on two dimensions simultaneously evades a system that unions independently-thresholded detectors, because no single detector's threshold ever fires.
+**Also corrected Attack 4 (cross-detector) for the same reason as Attack 1** — its first version used the same backfiring popular-entity camouflage for its device-sharing component, so FRAUDAR catching it 100% told nothing about the intended cross-detector blind spot. Rebuilt using the corrected paired-decoy technique at reduced strength. Result: full evasion (0% recall on all three detectors), confirming the hypothesized architectural gap — a ring that stays below each individual detector's threshold on two dimensions simultaneously evades a system that unions independently-thresholded detectors, because no single detector's threshold ever fires.
 
 **Lesson carried forward:** an attack that fails to evade a defense is not evidence the defense is robust — it may just mean the attack targeted the wrong mechanism. Worth diagnosing *why* an attack failed with the same rigor as diagnosing why a detector failed, before either claiming victory or moving on.
 
@@ -214,4 +215,4 @@ Built on top of these: a per-detector "most common false positive" lookup (groun
 Also added, per explicit request: a compact EVIDENCE / INTERPRETATION / RECOMMENDATION quick-view block at the top of every briefing, so the boundary between "what a detector observed," "what the deterministic rule concluded," and "what's being suggested" stays visually distinct — the same boundary this project has enforced in code throughout, now made visible in the output text itself.
 
 **Lesson carried forward:** a system can be fully deterministic and auditable in its decisions while still producing prose that reads as generic — auditability of the *decision* doesn't automatically give you specificity in the *explanation* of it; that has to be built deliberately, using the same decision-time data, not bolted on as better copywriting afterward.
-
+```
