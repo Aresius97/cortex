@@ -5,7 +5,7 @@ Implements the core mechanism of Hooi et al. (KDD 2016) "FRAUDAR: Bounding
 Graph Fraud in the Face of Camouflage": a suspiciousness-weighted greedy
 peeling algorithm over the account<->entity (device/ip) bipartite graph.
 
-What we implement:
+Implemented Components:
   - The greedy peeling loop (repeatedly strip the lowest weighted-degree
     node, track density, keep the best snapshot).
   - The suspiciousness weighting: each edge to entity e is weighted
@@ -18,7 +18,7 @@ What we implement:
     remove it and repeat, so we can recover multiple rings, not just the
     single densest one.
 
-What we deliberately do NOT implement:
+Intentionally omitted components:
   - The paper's formal approximation-bound proof (not needed to build a
     working detector).
   - Any claim of a global optimum -- greedy peeling is a well-understood

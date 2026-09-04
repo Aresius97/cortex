@@ -4,9 +4,9 @@
 
 Detects the `shared_infra_promo_abuse` ring archetype using a weighted densest-subgraph algorithm, based on Hooi et al. (KDD 2016), "FRAUDAR: Bounding Graph Fraud in the Face of Camouflage."
 
-**What we implement:** the core suspiciousness-weighted scoring (`1/log(degree+2)` per edge, so edges toward rare/small shared pools count heavily and edges toward already-popular entities barely count at all) plus a greedy peeling loop.
+**Implemented components:** the core suspiciousness-weighted scoring (`1/log(degree+2)` per edge, so edges toward rare/small shared pools count heavily and edges toward already-popular entities barely count at all) plus a greedy peeling loop.
 
-**What we deliberately do not implement:** the paper's formal approximation-bound proof — not needed to build a working detector, only the algorithm and its weighting scheme matter here.
+**Intentionally omitted components:** the paper's formal approximation-bound proof — not needed to build a working detector, only the algorithm and its weighting scheme matter here.
 
 ## Run it
 

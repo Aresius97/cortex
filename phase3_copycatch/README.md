@@ -4,9 +4,9 @@
 
 Detects the `lockstep_chargeback_ring` archetype using fixed-width time-window clustering, based on Beutel et al. (WWW 2013), "CopyCatch: Stopping Group Attacks by Spotting Lockstep Behavior in Social Networks."
 
-**What we implement:** per-merchant chargeback timestamp extraction, a sliding time window counting distinct participating accounts, and merging of overlapping flagged windows into events.
+**Implemented components:** per-merchant chargeback timestamp extraction, a sliding time window counting distinct participating accounts, and merging of overlapping flagged windows into events.
 
-**What we deliberately do not implement:** the original paper's local-search heuristic for optimizing the bipartite dense-block boundary. Basic time-window clustering is sufficient for this archetype's camouflage mechanism (widening jitter), and is far cheaper to build and reason about.
+**Intentionally omitted components:** the original paper's local-search heuristic for optimizing the bipartite dense-block boundary. Basic time-window clustering is sufficient for this archetype's camouflage mechanism (widening jitter), and is far cheaper to build and reason about.
 
 ## A dataset gap we found and fixed before trusting any result
 
