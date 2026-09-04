@@ -1,0 +1,578 @@
+[
+  {
+    "case_id": "ring_42f49fa701",
+    "gaps": [
+      "No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.",
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)",
+      "No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'"
+    ],
+    "similar_cases": [
+      {
+        "score": 14.95,
+        "rank": 59,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 3,
+        "exposure": 4787.23,
+        "confidence": 0.6,
+        "why": "3 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 14.89,
+        "rank": 61,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 3,
+        "exposure": 4454.32,
+        "confidence": 0.6,
+        "why": "3 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 14.88,
+        "rank": 50,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 3,
+        "exposure": 5789.57,
+        "confidence": 0.6,
+        "why": "3 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 0,
+      "genuine_rate": 0.0
+    },
+    "next_steps": [
+      "Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.",
+      "Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Given only 0/3 similar cases were confirmed genuine fraud, treat this as lower historical precedent -- verify the foundational evidence (the specific shared entities, timing, or flow) before escalating."
+    ],
+    "bottom_line": "Bottom line: low historical precedent for fraud (0% of similar cases confirmed) -- verify foundational evidence before escalating.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u2713 FRAUDAR: HIGH -- 100% of the ring's 6 accounts flagged\nINTERPRETATION: FRAUDAR is the only applicable signal for this ring (CopyCatch, FlowScope N/A -- this ring's activity has no structural basis for those detectors to evaluate). Single-source evidence, uncontradicted.\nRECOMMENDATION: Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.\n\n1. WHY THIS CASE IS SUSPICIOUS\nFRAUDAR is the only applicable signal for this ring (CopyCatch, FlowScope N/A -- this ring's activity has no structural basis for those detectors to evaluate). Single-source evidence, uncontradicted.\n\n2. CONTRADICTIONS & UNCERTAINTY\nSingle-source evidence (FRAUDAR only) -- no other detector was structurally able to weigh in, so there is nothing to disagree with.\n\n3. WHY THIS PRIORITY\nP2 \u2014 MEDIUM confidence (single-source evidence or a partial disagreement between detectors) is always P2 regardless of exposure -- corroboration, not dollar value, is what would move this to P1.\n\n4. EVIDENCE GAPS\n- No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n- No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'\n\n5. WHAT WOULD CHANGE MY MIND\nConfirmation from a second detector would raise this to HIGH confidence. Independent evidence ruling out coincidental sharing (e.g. a confirmed shared household or office, not a coordinated ring) would lower it.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 0/3 (0%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.\n- Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Given only 0/3 similar cases were confirmed genuine fraud, treat this as lower historical precedent -- verify the foundational evidence (the specific shared entities, timing, or flow) before escalating.\n\n8. BRIEFING SUMMARY\nCase ring_42f49fa701: MEDIUM confidence, P2 priority, Rs5,058 exposure (all fixed by the deterministic layer). 3 similar cases found; 0/3 (0%) were confirmed genuine fraud.\nBottom line: low historical precedent for fraud (0% of similar cases confirmed) -- verify foundational evidence before escalating.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "ring_72da5c9114",
+    "gaps": [
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No downstream beneficiary verification \u2014 FlowScope traces a circular flow's structure and timing, but does not verify whether the terminal accounts in the cycle are themselves registered, legitimate merchants or further unverified pass-throughs.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)",
+      "No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'"
+    ],
+    "similar_cases": [
+      {
+        "score": 14.92,
+        "rank": 3,
+        "detector": "flowscope",
+        "archetype": "circular_flow_laundering",
+        "n_accounts": 5,
+        "exposure": 82925.16,
+        "confidence": 0.79,
+        "why": "5-hop circular transaction flow, amount conserved at 71% across hops, completed in 23 minutes (FlowScope-lite flow signal)",
+        "genuine": true
+      },
+      {
+        "score": 14.85,
+        "rank": 4,
+        "detector": "flowscope",
+        "archetype": "circular_flow_laundering",
+        "n_accounts": 4,
+        "exposure": 63730.32,
+        "confidence": 0.783,
+        "why": "4-hop circular transaction flow, amount conserved at 82% across hops, completed in 45 minutes (FlowScope-lite flow signal)",
+        "genuine": true
+      },
+      {
+        "score": 12.64,
+        "rank": 5,
+        "detector": "flowscope",
+        "archetype": "circular_flow_laundering",
+        "n_accounts": 8,
+        "exposure": 113901.92,
+        "confidence": 0.668,
+        "why": "8-hop circular transaction flow, amount conserved at 63% across hops, completed in 53 minutes (FlowScope-lite flow signal)",
+        "genuine": true
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 3,
+      "genuine_rate": 1.0
+    },
+    "next_steps": [
+      "Confirm whether any terminal account in the flow is a registered, legitimate business -- FlowScope flags circular STRUCTURE, which can occasionally reflect a legitimate B2B settlement loop rather than layering.",
+      "Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "Given 3/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases."
+    ],
+    "bottom_line": "Bottom line: strong historical precedent for fraud (100% of similar cases confirmed) -- prioritize confirming identity/merchant details.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u25cb FRAUDAR: N/A -- this ring has no activity of the type FRAUDAR evaluates\nINTERPRETATION: FlowScope is the only applicable signal for this ring (FRAUDAR, CopyCatch N/A -- this ring's activity has no structural basis for those detectors to evaluate). Single-source evidence, uncontradicted.\nRECOMMENDATION: Confirm whether any terminal account in the flow is a registered, legitimate business -- FlowScope flags circular STRUCTURE, which can occasionally reflect a legitimate B2B settlement loop rather than layering.\n\n1. WHY THIS CASE IS SUSPICIOUS\nFlowScope is the only applicable signal for this ring (FRAUDAR, CopyCatch N/A -- this ring's activity has no structural basis for those detectors to evaluate). Single-source evidence, uncontradicted.\n\n2. CONTRADICTIONS & UNCERTAINTY\nSingle-source evidence (FlowScope only) -- no other detector was structurally able to weigh in, so there is nothing to disagree with.\n\n3. WHY THIS PRIORITY\nP2 \u2014 MEDIUM confidence (single-source evidence or a partial disagreement between detectors) is always P2 regardless of exposure -- corroboration, not dollar value, is what would move this to P1.\n\n4. EVIDENCE GAPS\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No downstream beneficiary verification \u2014 FlowScope traces a circular flow's structure and timing, but does not verify whether the terminal accounts in the cycle are themselves registered, legitimate merchants or further unverified pass-throughs.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n- No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'\n\n5. WHAT WOULD CHANGE MY MIND\nConfirmation from a second detector would raise this to HIGH confidence. Independent evidence ruling out coincidental sharing (e.g. a confirmed shared household or office, not a coordinated ring) would lower it.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 3/3 (100%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Confirm whether any terminal account in the flow is a registered, legitimate business -- FlowScope flags circular STRUCTURE, which can occasionally reflect a legitimate B2B settlement loop rather than layering.\n- Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- Given 3/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases.\n\n8. BRIEFING SUMMARY\nCase ring_72da5c9114: MEDIUM confidence, P2 priority, Rs75,536 exposure (all fixed by the deterministic layer). 3 similar cases found; 3/3 (100%) were confirmed genuine fraud.\nBottom line: strong historical precedent for fraud (100% of similar cases confirmed) -- prioritize confirming identity/merchant details.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "ring_52aa7cddb1",
+    "gaps": [
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)",
+      "No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'"
+    ],
+    "similar_cases": [
+      {
+        "score": 14.79,
+        "rank": 18,
+        "detector": "copycatch",
+        "archetype": "lockstep_chargeback_ring",
+        "n_accounts": 6,
+        "exposure": 30492.09,
+        "confidence": 0.747,
+        "why": "6 accounts filed chargebacks against merchant_65cc380297 within a 27-minute window (CopyCatch-lite lockstep signal)",
+        "genuine": true
+      },
+      {
+        "score": 14.52,
+        "rank": 21,
+        "detector": "copycatch",
+        "archetype": "lockstep_chargeback_ring",
+        "n_accounts": 5,
+        "exposure": 22300.01,
+        "confidence": 0.756,
+        "why": "5 accounts filed chargebacks against merchant_ed1c7ea31d within a 19-minute window (CopyCatch-lite lockstep signal)",
+        "genuine": true
+      },
+      {
+        "score": 14.43,
+        "rank": 26,
+        "detector": "copycatch",
+        "archetype": "lockstep_chargeback_ring",
+        "n_accounts": 5,
+        "exposure": 20060.1,
+        "confidence": 0.756,
+        "why": "5 accounts filed chargebacks against merchant_3852ea0b38 within a 19-minute window (CopyCatch-lite lockstep signal)",
+        "genuine": true
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 3,
+      "genuine_rate": 1.0
+    },
+    "next_steps": [
+      "Confirm the merchant's own dispute records -- CopyCatch flags coordinated TIMING, not confirmed fraudulent intent; a flash sale, app outage, or shared promotional deadline can produce a similar clustering pattern.",
+      "Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "Given 3/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases."
+    ],
+    "bottom_line": "Bottom line: strong historical precedent for fraud (100% of similar cases confirmed) -- prioritize confirming identity/merchant details.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u25cb FRAUDAR: N/A -- this ring has no activity of the type FRAUDAR evaluates\nINTERPRETATION: CopyCatch is the only applicable signal for this ring (FRAUDAR, FlowScope N/A -- this ring's activity has no structural basis for those detectors to evaluate). Single-source evidence, uncontradicted.\nRECOMMENDATION: Confirm the merchant's own dispute records -- CopyCatch flags coordinated TIMING, not confirmed fraudulent intent; a flash sale, app outage, or shared promotional deadline can produce a similar clustering pattern.\n\n1. WHY THIS CASE IS SUSPICIOUS\nCopyCatch is the only applicable signal for this ring (FRAUDAR, FlowScope N/A -- this ring's activity has no structural basis for those detectors to evaluate). Single-source evidence, uncontradicted.\n\n2. CONTRADICTIONS & UNCERTAINTY\nSingle-source evidence (CopyCatch only) -- no other detector was structurally able to weigh in, so there is nothing to disagree with.\n\n3. WHY THIS PRIORITY\nP2 \u2014 MEDIUM confidence (single-source evidence or a partial disagreement between detectors) is always P2 regardless of exposure -- corroboration, not dollar value, is what would move this to P1.\n\n4. EVIDENCE GAPS\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n- No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'\n\n5. WHAT WOULD CHANGE MY MIND\nConfirmation from a second detector would raise this to HIGH confidence. Independent evidence ruling out coincidental sharing (e.g. a confirmed shared household or office, not a coordinated ring) would lower it.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 3/3 (100%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Confirm the merchant's own dispute records -- CopyCatch flags coordinated TIMING, not confirmed fraudulent intent; a flash sale, app outage, or shared promotional deadline can produce a similar clustering pattern.\n- Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- Given 3/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases.\n\n8. BRIEFING SUMMARY\nCase ring_52aa7cddb1: MEDIUM confidence, P2 priority, Rs38,883 exposure (all fixed by the deterministic layer). 3 similar cases found; 3/3 (100%) were confirmed genuine fraud.\nBottom line: strong historical precedent for fraud (100% of similar cases confirmed) -- prioritize confirming identity/merchant details.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "attack1b_fraudar_corrected",
+    "gaps": [
+      "No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.",
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)"
+    ],
+    "similar_cases": [
+      {
+        "score": 11.88,
+        "rank": 67,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 7,
+        "exposure": 7155.13,
+        "confidence": 1.0,
+        "why": "7 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": true
+      },
+      {
+        "score": 11.82,
+        "rank": 57,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 6,
+        "exposure": 10051.17,
+        "confidence": 0.9,
+        "why": "6 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 11.8,
+        "rank": 62,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 8,
+        "exposure": 10332.68,
+        "confidence": 1.0,
+        "why": "8 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": true
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 2,
+      "genuine_rate": 0.67
+    },
+    "next_steps": [
+      "Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Given 2/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases."
+    ],
+    "bottom_line": "Bottom line: strong historical precedent for fraud (67% of similar cases confirmed) -- prioritize confirming identity/merchant details.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u2717 FRAUDAR: LOW -- checked, only 0% of accounts flagged (below threshold)\nINTERPRETATION: No detector currently flags this pattern (FRAUDAR checked, none triggered). Not currently actionable.\nRECOMMENDATION: Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n\n1. WHY THIS CASE IS SUSPICIOUS\nNo detector currently flags this pattern (FRAUDAR checked, none triggered). Not currently actionable.\n\n2. CONTRADICTIONS & UNCERTAINTY\nNo detector currently flags this case -- there is no positive signal for another detector to agree or disagree with.\n\n3. WHY THIS PRIORITY\nP1 \u2014 adaptation indicator POSSIBLE overrides all other factors -- an actively adapting attacker is escalated regardless of raw confidence.\n\n4. EVIDENCE GAPS\n- No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n\n5. WHAT WOULD CHANGE MY MIND\nNo detector currently supports escalation. New transactional activity of the type these detectors evaluate would be needed before this could be reconsidered.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 2/3 (67%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Given 2/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases.\n\n8. BRIEFING SUMMARY\nCase attack1b_fraudar_corrected: LOW confidence, P1 priority, Rs8,187 exposure (all fixed by the deterministic layer). 3 similar cases found; 2/3 (67%) were confirmed genuine fraud.\nBottom line: strong historical precedent for fraud (67% of similar cases confirmed) -- prioritize confirming identity/merchant details.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "attack2b_copycatch_spaced",
+    "gaps": [
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)"
+    ],
+    "similar_cases": [
+      {
+        "score": 11.97,
+        "rank": 35,
+        "detector": "copycatch",
+        "archetype": "lockstep_chargeback_ring",
+        "n_accounts": 6,
+        "exposure": 17282.6,
+        "confidence": 0.698,
+        "why": "6 accounts filed chargebacks against merchant_3852ea0b38 within a 36-minute window (CopyCatch-lite lockstep signal)",
+        "genuine": true
+      },
+      {
+        "score": 11.95,
+        "rank": 22,
+        "detector": "copycatch",
+        "archetype": "lockstep_chargeback_ring",
+        "n_accounts": 4,
+        "exposure": 17748.6,
+        "confidence": 0.806,
+        "why": "4 accounts filed chargebacks against merchant_611fe2c7a4 within a 3-minute window (CopyCatch-lite lockstep signal)",
+        "genuine": true
+      },
+      {
+        "score": 11.88,
+        "rank": 28,
+        "detector": "copycatch",
+        "archetype": "lockstep_chargeback_ring",
+        "n_accounts": 4,
+        "exposure": 14532.61,
+        "confidence": 0.805,
+        "why": "4 accounts filed chargebacks against merchant_611fe2c7a4 within a 3-minute window (CopyCatch-lite lockstep signal)",
+        "genuine": true
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 3,
+      "genuine_rate": 1.0
+    },
+    "next_steps": [
+      "Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "Given 3/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases."
+    ],
+    "bottom_line": "Bottom line: strong historical precedent for fraud (100% of similar cases confirmed) -- prioritize confirming identity/merchant details.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u25cb FRAUDAR: N/A -- this ring has no activity of the type FRAUDAR evaluates\nINTERPRETATION: No detector currently flags this pattern (CopyCatch checked, none triggered). Not currently actionable.\nRECOMMENDATION: Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n\n1. WHY THIS CASE IS SUSPICIOUS\nNo detector currently flags this pattern (CopyCatch checked, none triggered). Not currently actionable.\n\n2. CONTRADICTIONS & UNCERTAINTY\nNo detector currently flags this case -- there is no positive signal for another detector to agree or disagree with.\n\n3. WHY THIS PRIORITY\nP1 \u2014 adaptation indicator POSSIBLE overrides all other factors -- an actively adapting attacker is escalated regardless of raw confidence.\n\n4. EVIDENCE GAPS\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n\n5. WHAT WOULD CHANGE MY MIND\nNo detector currently supports escalation. New transactional activity of the type these detectors evaluate would be needed before this could be reconsidered.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 3/3 (100%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- Given 3/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases.\n\n8. BRIEFING SUMMARY\nCase attack2b_copycatch_spaced: LOW confidence, P1 priority, Rs16,676 exposure (all fixed by the deterministic layer). 3 similar cases found; 3/3 (100%) were confirmed genuine fraud.\nBottom line: strong historical precedent for fraud (100% of similar cases confirmed) -- prioritize confirming identity/merchant details.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "attack3_flowscope_delay",
+    "gaps": [
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No downstream beneficiary verification \u2014 FlowScope traces a circular flow's structure and timing, but does not verify whether the terminal accounts in the cycle are themselves registered, legitimate merchants or further unverified pass-throughs.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)",
+      "No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'"
+    ],
+    "similar_cases": [
+      {
+        "score": 11.99,
+        "rank": 1,
+        "detector": "flowscope",
+        "archetype": "circular_flow_laundering",
+        "n_accounts": 4,
+        "exposure": 75536.1,
+        "confidence": 0.877,
+        "why": "4-hop circular transaction flow, amount conserved at 84% across hops, completed in 15 minutes (FlowScope-lite flow signal)",
+        "genuine": true
+      },
+      {
+        "score": 11.93,
+        "rank": 3,
+        "detector": "flowscope",
+        "archetype": "circular_flow_laundering",
+        "n_accounts": 5,
+        "exposure": 82925.16,
+        "confidence": 0.79,
+        "why": "5-hop circular transaction flow, amount conserved at 71% across hops, completed in 23 minutes (FlowScope-lite flow signal)",
+        "genuine": true
+      },
+      {
+        "score": 11.89,
+        "rank": 2,
+        "detector": "flowscope",
+        "archetype": "circular_flow_laundering",
+        "n_accounts": 4,
+        "exposure": 67464.47,
+        "confidence": 0.889,
+        "why": "4-hop circular transaction flow, amount conserved at 86% across hops, completed in 14 minutes (FlowScope-lite flow signal)",
+        "genuine": true
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 3,
+      "genuine_rate": 1.0
+    },
+    "next_steps": [
+      "Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "Given 3/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases."
+    ],
+    "bottom_line": "Bottom line: strong historical precedent for fraud (100% of similar cases confirmed) -- prioritize confirming identity/merchant details.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u25cb FRAUDAR: N/A -- this ring has no activity of the type FRAUDAR evaluates\nINTERPRETATION: No detector currently flags this pattern (FlowScope checked, none triggered). Not currently actionable.\nRECOMMENDATION: Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n\n1. WHY THIS CASE IS SUSPICIOUS\nNo detector currently flags this pattern (FlowScope checked, none triggered). Not currently actionable.\n\n2. CONTRADICTIONS & UNCERTAINTY\nNo detector currently flags this case -- there is no positive signal for another detector to agree or disagree with.\n\n3. WHY THIS PRIORITY\nP3 \u2014 LOW confidence -- no detector currently flags this strongly enough to warrant higher priority, regardless of exposure.\n\n4. EVIDENCE GAPS\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No downstream beneficiary verification \u2014 FlowScope traces a circular flow's structure and timing, but does not verify whether the terminal accounts in the cycle are themselves registered, legitimate merchants or further unverified pass-throughs.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n- No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'\n\n5. WHAT WOULD CHANGE MY MIND\nNo detector currently supports escalation. New transactional activity of the type these detectors evaluate would be needed before this could be reconsidered.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 3/3 (100%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Close the highest-value gap first: No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- Given 3/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases.\n\n8. BRIEFING SUMMARY\nCase attack3_flowscope_delay: LOW confidence, P3 priority, Rs76,359 exposure (all fixed by the deterministic layer). 3 similar cases found; 3/3 (100%) were confirmed genuine fraud.\nBottom line: strong historical precedent for fraud (100% of similar cases confirmed) -- prioritize confirming identity/merchant details.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "attack4_cross_detector",
+    "gaps": [
+      "No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.",
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)",
+      "No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'"
+    ],
+    "similar_cases": [
+      {
+        "score": 11.97,
+        "rank": 34,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 6,
+        "exposure": 17696.84,
+        "confidence": 0.9,
+        "why": "6 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 11.84,
+        "rank": 40,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 6,
+        "exposure": 14247.78,
+        "confidence": 0.9,
+        "why": "6 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 11.84,
+        "rank": 47,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 7,
+        "exposure": 14188.96,
+        "confidence": 1.0,
+        "why": "7 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 0,
+      "genuine_rate": 0.0
+    },
+    "next_steps": [
+      "Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Given only 0/3 similar cases were confirmed genuine fraud, treat this as lower historical precedent -- verify the foundational evidence (the specific shared entities, timing, or flow) before escalating."
+    ],
+    "bottom_line": "Bottom line: low historical precedent for fraud (0% of similar cases confirmed) -- verify foundational evidence before escalating.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u2717 FRAUDAR: LOW -- checked, only 0% of accounts flagged (below threshold)\nINTERPRETATION: No detector currently flags this pattern (FRAUDAR, CopyCatch checked, none triggered). Not currently actionable.\nRECOMMENDATION: Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n\n1. WHY THIS CASE IS SUSPICIOUS\nNo detector currently flags this pattern (FRAUDAR, CopyCatch checked, none triggered). Not currently actionable.\n\n2. CONTRADICTIONS & UNCERTAINTY\nNo detector currently flags this case -- there is no positive signal for another detector to agree or disagree with.\n\n3. WHY THIS PRIORITY\nP3 \u2014 LOW confidence -- no detector currently flags this strongly enough to warrant higher priority, regardless of exposure.\n\n4. EVIDENCE GAPS\n- No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n- No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'\n\n5. WHAT WOULD CHANGE MY MIND\nNo detector currently supports escalation. New transactional activity of the type these detectors evaluate would be needed before this could be reconsidered.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 0/3 (0%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Given only 0/3 similar cases were confirmed genuine fraud, treat this as lower historical precedent -- verify the foundational evidence (the specific shared entities, timing, or flow) before escalating.\n\n8. BRIEFING SUMMARY\nCase attack4_cross_detector: LOW confidence, P3 priority, Rs17,045 exposure (all fixed by the deterministic layer). 3 similar cases found; 0/3 (0%) were confirmed genuine fraud.\nBottom line: low historical precedent for fraud (0% of similar cases confirmed) -- verify foundational evidence before escalating.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "SYN-AGREE-01 [SYNTHETIC \u2014 illustrates rule table, not a live detection]",
+    "gaps": [
+      "No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.",
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.",
+      "No downstream beneficiary verification \u2014 FlowScope traces a circular flow's structure and timing, but does not verify whether the terminal accounts in the cycle are themselves registered, legitimate merchants or further unverified pass-throughs.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)",
+      "No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'"
+    ],
+    "similar_cases": [
+      {
+        "score": 14.45,
+        "rank": 13,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 11,
+        "exposure": 62565.47,
+        "confidence": 1.0,
+        "why": "11 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": true
+      },
+      {
+        "score": 14.23,
+        "rank": 10,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 8,
+        "exposure": 48817.04,
+        "confidence": 1.0,
+        "why": "8 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 14.14,
+        "rank": 30,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 13,
+        "exposure": 44071.16,
+        "confidence": 1.0,
+        "why": "13 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": true
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 2,
+      "genuine_rate": 0.67
+    },
+    "next_steps": [
+      "Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.",
+      "Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Given 2/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases."
+    ],
+    "bottom_line": "Bottom line: strong historical precedent for fraud (67% of similar cases confirmed) -- prioritize confirming identity/merchant details.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u2713 FRAUDAR: HIGH -- 89% of the ring's 9 accounts flagged (SYNTHETIC)\nINTERPRETATION: Multiple independent detectors agree (FRAUDAR, CopyCatch, FlowScope all HIGH). Corroboration across different evidence types (structure, timing, flow) is the strongest pattern this system can produce.\nRECOMMENDATION: Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.\n\n1. WHY THIS CASE IS SUSPICIOUS\nMultiple independent detectors agree (FRAUDAR, CopyCatch, FlowScope all HIGH). Corroboration across different evidence types (structure, timing, flow) is the strongest pattern this system can produce.\n\n2. CONTRADICTIONS & UNCERTAINTY\nAll triggered detectors agree (FRAUDAR, CopyCatch, FlowScope all HIGH).\n\n3. WHY THIS PRIORITY\nP1 \u2014 HIGH confidence and exposure \u20b9118,000 meets the \u20b920,000 threshold for automatic escalation.\n\n4. EVIDENCE GAPS\n- No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.\n- No downstream beneficiary verification \u2014 FlowScope traces a circular flow's structure and timing, but does not verify whether the terminal accounts in the cycle are themselves registered, legitimate merchants or further unverified pass-throughs.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n- No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'\n\n5. WHAT WOULD CHANGE MY MIND\nAlready at this system's highest evidentiary bar (independent agreement across detector types). Further movement would need to come from OUTSIDE these three detectors -- e.g. confirmed account ownership or a manual KYC review -- not from more of the same kind of signal.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 2/3 (67%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.\n- Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Given 2/3 similar cases were confirmed genuine fraud, prioritize confirming counterparty/merchant identity -- this was decisive in past similar cases.\n\n8. BRIEFING SUMMARY\nCase SYN-AGREE-01 [SYNTHETIC \u2014 illustrates rule table, not a live detection]: HIGH confidence, P1 priority, Rs118,000 exposure (all fixed by the deterministic layer). 3 similar cases found; 2/3 (67%) were confirmed genuine fraud.\nBottom line: strong historical precedent for fraud (67% of similar cases confirmed) -- prioritize confirming identity/merchant details.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "SYN-AGREE-02 [SYNTHETIC \u2014 illustrates rule table, not a live detection]",
+    "gaps": [
+      "No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.",
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.",
+      "No downstream beneficiary verification \u2014 FlowScope traces a circular flow's structure and timing, but does not verify whether the terminal accounts in the cycle are themselves registered, legitimate merchants or further unverified pass-throughs.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)",
+      "No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'"
+    ],
+    "similar_cases": [
+      {
+        "score": 14.43,
+        "rank": 10,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 8,
+        "exposure": 48817.04,
+        "confidence": 1.0,
+        "why": "8 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 14.11,
+        "rank": 14,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 6,
+        "exposure": 33767.98,
+        "confidence": 0.9,
+        "why": "6 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 14.11,
+        "rank": 8,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 5,
+        "exposure": 33722.86,
+        "confidence": 0.8,
+        "why": "5 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 0,
+      "genuine_rate": 0.0
+    },
+    "next_steps": [
+      "Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.",
+      "Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Given only 0/3 similar cases were confirmed genuine fraud, treat this as lower historical precedent -- verify the foundational evidence (the specific shared entities, timing, or flow) before escalating."
+    ],
+    "bottom_line": "Bottom line: low historical precedent for fraud (0% of similar cases confirmed) -- verify foundational evidence before escalating.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u2713 FRAUDAR: HIGH -- 86% of the ring's 7 accounts flagged (SYNTHETIC)\nINTERPRETATION: Multiple independent detectors agree (FRAUDAR, FlowScope all HIGH). Corroboration across different evidence types (structure, timing, flow) is the strongest pattern this system can produce; CopyCatch reading LOW does not weaken this -- a detector's silence on one dimension doesn't disprove positive evidence on another.\nRECOMMENDATION: Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.\n\n1. WHY THIS CASE IS SUSPICIOUS\nMultiple independent detectors agree (FRAUDAR, FlowScope all HIGH). Corroboration across different evidence types (structure, timing, flow) is the strongest pattern this system can produce; CopyCatch reading LOW does not weaken this -- a detector's silence on one dimension doesn't disprove positive evidence on another.\n\n2. CONTRADICTIONS & UNCERTAINTY\nAll triggered detectors agree (FRAUDAR, FlowScope both HIGH).\n\n3. WHY THIS PRIORITY\nP1 \u2014 HIGH confidence and exposure \u20b994,000 meets the \u20b920,000 threshold for automatic escalation.\n\n4. EVIDENCE GAPS\n- No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.\n- No downstream beneficiary verification \u2014 FlowScope traces a circular flow's structure and timing, but does not verify whether the terminal accounts in the cycle are themselves registered, legitimate merchants or further unverified pass-throughs.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n- No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'\n\n5. WHAT WOULD CHANGE MY MIND\nAlready at this system's highest evidentiary bar (independent agreement across detector types). Further movement would need to come from OUTSIDE these three detectors -- e.g. confirmed account ownership or a manual KYC review -- not from more of the same kind of signal.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 0/3 (0%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.\n- Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Given only 0/3 similar cases were confirmed genuine fraud, treat this as lower historical precedent -- verify the foundational evidence (the specific shared entities, timing, or flow) before escalating.\n\n8. BRIEFING SUMMARY\nCase SYN-AGREE-02 [SYNTHETIC \u2014 illustrates rule table, not a live detection]: HIGH confidence, P1 priority, Rs94,000 exposure (all fixed by the deterministic layer). 3 similar cases found; 0/3 (0%) were confirmed genuine fraud.\nBottom line: low historical precedent for fraud (0% of similar cases confirmed) -- verify foundational evidence before escalating.\n",
+    "grounding_warnings": []
+  },
+  {
+    "case_id": "SYN-DISAGREE-01 [SYNTHETIC \u2014 illustrates rule table, not a live detection]",
+    "gaps": [
+      "No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.",
+      "No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.",
+      "No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.",
+      "No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)",
+      "No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'"
+    ],
+    "similar_cases": [
+      {
+        "score": 14.46,
+        "rank": 16,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 3,
+        "exposure": 16642.09,
+        "confidence": 0.6,
+        "why": "3 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 14.23,
+        "rank": 24,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 3,
+        "exposure": 12732.54,
+        "confidence": 0.6,
+        "why": "3 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      },
+      {
+        "score": 14.0,
+        "rank": 38,
+        "detector": "fraudar",
+        "archetype": "shared_infra_promo_abuse",
+        "n_accounts": 4,
+        "exposure": 9793.06,
+        "confidence": 0.7,
+        "why": "4 accounts cluster together via shared devices/IPs, below the population's normal sharing baseline (FRAUDAR-lite density signal)",
+        "genuine": false
+      }
+    ],
+    "similar_summary": {
+      "n_found": 3,
+      "n_genuine": 0,
+      "genuine_rate": 0.0
+    },
+    "next_steps": [
+      "Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.",
+      "Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.",
+      "Given only 0/3 similar cases were confirmed genuine fraud, treat this as lower historical precedent -- verify the foundational evidence (the specific shared entities, timing, or flow) before escalating."
+    ],
+    "bottom_line": "Bottom line: low historical precedent for fraud (0% of similar cases confirmed) -- verify foundational evidence before escalating.",
+    "briefing": "[MOCK MODE -- templated placeholder, not a real Gemini response. Set GEMINI_API_KEY and omit --mock for a real one.]\n\n0. QUICK VIEW\nEVIDENCE: \u2713 FRAUDAR: HIGH -- 83% of the ring's 6 accounts flagged (SYNTHETIC)\nINTERPRETATION: FRAUDAR flags this case; CopyCatch could see this ring's activity but did not flag it. This is a partial disagreement, not a contradiction: each detector targets a different mechanism, and one detector's silence doesn't disprove another's positive finding -- but it does mean the evidence is currently single-sourced.\nRECOMMENDATION: Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.\n\n1. WHY THIS CASE IS SUSPICIOUS\nFRAUDAR flags this case; CopyCatch could see this ring's activity but did not flag it. This is a partial disagreement, not a contradiction: each detector targets a different mechanism, and one detector's silence doesn't disprove another's positive finding -- but it does mean the evidence is currently single-sourced.\n\n2. CONTRADICTIONS & UNCERTAINTY\nFRAUDAR HIGH, CopyCatch LOW -- this is a genuine, real disagreement between detectors that see the same accounts differently, not a contradiction that cancels either signal.\n\n3. WHY THIS PRIORITY\nP2 \u2014 MEDIUM confidence (single-source evidence or a partial disagreement between detectors) is always P2 regardless of exposure -- corroboration, not dollar value, is what would move this to P1.\n\n4. EVIDENCE GAPS\n- No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Device/IP history is a point-in-time snapshot, not a rolling history \u2014 FRAUDAR's signal reflects current device-sharing structure only; whether this sharing pattern is new or months old is not established.\n- No prior regulatory filing (SAR/STR) linkage \u2014 this system does not check whether any account in this case has been previously reported to a regulator.\n- No merchant-side dispute resolution outcome \u2014 CopyCatch flags coordinated chargeback timing, but this system does not know whether the merchant contested or accepted any of these chargebacks, which would materially change the read.\n- No account-level case history \u2014 this system evaluates each case independently; whether any of these specific accounts appeared in a prior case (this system's own or a different one) is not automatically checked. (Partially addressed by the similar-cases comparison below, which matches on pattern similarity, not shared account identity.)\n- No adaptation baseline for this specific ring \u2014 the adaptation indicator requires a real 'before' snapshot of the same ring lineage; without one, NONE means 'no temporal data available,' not 'confirmed no adaptation occurred.'\n\n5. WHAT WOULD CHANGE MY MIND\nIndependent confirmation of CopyCatch's mechanism -- e.g. a delayed or adapted version of the pattern it checks for -- would raise confidence toward HIGH. A clear alternate explanation for FRAUDAR's signal would lower it.\n\n6. SIMILAR HISTORICAL CASES\n3 similar cases found; 0/3 (0%) were confirmed genuine fraud.\n\n7. RECOMMENDED NEXT STEPS\n- Verify the shared devices aren't public/shared infrastructure (e.g. a shared office network, family device, or public terminal) -- this is FRAUDAR's most common false-positive pattern in this system.\n- Close the highest-value gap first: No KYC/identity verification data \u2014 this system has no field for verified legal identity, so 'shared device' and 'shared account' cannot be distinguished from 'shared household' without an external identity check.\n- Given only 0/3 similar cases were confirmed genuine fraud, treat this as lower historical precedent -- verify the foundational evidence (the specific shared entities, timing, or flow) before escalating.\n\n8. BRIEFING SUMMARY\nCase SYN-DISAGREE-01 [SYNTHETIC \u2014 illustrates rule table, not a live detection]: MEDIUM confidence, P2 priority, Rs31,000 exposure (all fixed by the deterministic layer). 3 similar cases found; 0/3 (0%) were confirmed genuine fraud.\nBottom line: low historical precedent for fraud (0% of similar cases confirmed) -- verify foundational evidence before escalating.\n",
+    "grounding_warnings": []
+  }
+]
