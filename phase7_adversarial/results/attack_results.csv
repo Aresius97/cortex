@@ -1,0 +1,7 @@
+attack_id,target_detector,n_accounts,system_wide_recall,fraudar_recall,copycatch_recall,flowscope_recall,fully_evaded
+attack1_fraudar_camouflage,fraudar,10,1.0,1.0,0.0,0.0,False
+attack1b_fraudar_corrected,fraudar,10,0.0,0.0,0.0,0.0,True
+attack2_copycatch_jitter,copycatch,9,0.889,0.0,0.8888888888888888,0.0,False
+attack2b_copycatch_spaced,copycatch,8,0.0,0.0,0.0,0.0,True
+attack3_flowscope_delay,flowscope,5,0.0,0.0,0.0,0.0,True
+attack4_cross_detector,cross-detector (fraudar + copycatch jointly),7,0.0,0.0,0.0,0.0,True
