@@ -1,0 +1,4 @@
+lineage,before_id,after_id,before_fraudar,after_fraudar,before_copycatch,after_copycatch,before_flowscope,after_flowscope,before_exposure,after_exposure,adaptation_score
+"FRAUDAR-targeting ring, naive -> corrected camouflage",attack1_fraudar_camouflage,attack1b_fraudar_corrected,HIGH,LOW,N/A,N/A,N/A,N/A,7439.55,8187.15,1.0
+"CopyCatch-targeting ring, uniform jitter -> spaced timing",attack2_copycatch_jitter,attack2b_copycatch_spaced,N/A,N/A,HIGH,LOW,N/A,N/A,35604.34,16675.92,0.468
+negative_control_genuine_collapse,synthetic,synthetic,HIGH,LOW,N/A,N/A,N/A,N/A,42000.0,1200.0,0.029
