@@ -6,7 +6,7 @@ Money Laundering Based on Graph Flow Analysis": trace directed flow paths
 through a transaction graph to catch layering/laundering movement, rather
 than relying on static density or timing alone.
 
-What we implement:
+Implemented Components:
   - A directed merchant-to-merchant transaction graph (merchant-merchant
     transfers are structurally rare/absent in legitimate traffic in this
     dataset -- normal traffic is customer<->merchant only -- so this graph
@@ -18,7 +18,7 @@ What we implement:
     balloon) and time compression (a genuine layering chain completes
     quickly, not over unrelated, spread-out timeframes).
 
-What we deliberately do NOT implement:
+Intentionally omitted components:
   - General-purpose flow/mincut optimization across a full multi-partite
     time-layered graph, which is FlowScope's actual algorithmic
     contribution for large-scale graphs. At this dataset's scale (a few
